@@ -14,7 +14,7 @@ const nextConfig = {
   allowedDevOrigins: ['192.168.56.1'],
   // Disabled static export so API routes can run in Next.js.
   // The project can still be deployed as a standard Next.js app.
-  output: 'standalone',
+  output: 'export',
 
   // Required for static export — disables server-side image optimization
   images: {
