@@ -1,0 +1,222 @@
+/* ─── Admin Design System — Perez Roofing Brand Colors ───────────────────────── */
+/* Uses the exact same color palette as the public website */
+
+/* ─── CSS Variables ─────────────────────────────────────────────────────────── */
+:root,
+.admin-dark {
+  --ad-bg:          #0A0C14;
+  --ad-surface:     #0e0e0e;
+  --ad-card:        rgba(255,255,255,0.02);
+  --ad-card-hover:  rgba(255,255,255,0.05);
+  --ad-border:      rgba(255,255,255,0.08);
+  --ad-border-hover:rgba(255,255,255,0.15);
+  --ad-text:        #e5e2e1;
+  --ad-text-muted:  rgba(229,226,225,0.5);
+  --ad-text-faint:  rgba(229,226,225,0.3);
+
+  /* Primary — same as site: #b7c4ff lavender */
+  --ad-primary:        #b7c4ff;
+  --ad-primary-dark:   #1b2b68;
+  --ad-primary-dim:    #0b1e5b;
+  --ad-primary-muted:  rgba(183,196,255,0.15);
+  --ad-primary-border: rgba(183,196,255,0.2);
+
+  /* Accent */
+  --ad-success:  #22C55E;
+  --ad-error:    #EF4444;
+  --ad-info:     #3B82F6;
+  --ad-warning:  #F59E0B;
+}
+
+.admin-light {
+  --ad-bg:          #F4F4F5;
+  --ad-surface:     #FFFFFF;
+  --ad-card:        rgba(0,0,0,0.02);
+  --ad-card-hover:  rgba(0,0,0,0.04);
+  --ad-border:      rgba(0,0,0,0.08);
+  --ad-border-hover:rgba(0,0,0,0.14);
+  --ad-text:        #131313;
+  --ad-text-muted:  rgba(19,19,19,0.5);
+  --ad-text-faint:  rgba(19,19,19,0.35);
+  --ad-primary:        #4b5b99;
+  --ad-primary-dark:   #1b2b68;
+  --ad-primary-dim:    #dde1ff;
+  --ad-primary-muted:  rgba(75,91,153,0.12);
+  --ad-primary-border: rgba(75,91,153,0.25);
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
+.admin-dark,
+.admin-light {
+  background-color: var(--ad-bg);
+  color: var(--ad-text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Cards ────────────────────────────────────────────────────────────────── */
+.admin-card {
+  background: var(--ad-card);
+  border: 1px solid var(--ad-border);
+  border-radius: 1.25rem;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-card:hover {
+  background: var(--ad-card-hover);
+  border-color: var(--ad-border-hover);
+}
+
+/* Primary-glow on hover — uses site's #b7c4ff glow */
+.admin-card-glow:hover {
+  box-shadow:
+    0 0 30px rgba(183,196,255,0.12),
+    0 8px 32px rgba(0,0,0,0.4);
+}
+
+.admin-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ─── Gradient Text — primary lavender ────────────────────────────────────── */
+.admin-gradient-text {
+  background: linear-gradient(135deg, #b7c4ff 0%, #dde1ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Animations ───────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ─── Skeleton shimmer ─────────────────────────────────────────────────────── */
+.admin-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(183,196,255,0.08) 50%,
+    rgba(255,255,255,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease infinite;
+  border-radius: 0.5rem;
+}
+
+/* ─── Table ────────────────────────────────────────────────────────────────── */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.625rem 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ad-text-muted);
+  border-bottom: 1px solid var(--ad-border);
+  position: sticky;
+  top: 0;
+  background: var(--ad-surface);
+  z-index: 1;
+}
+
+.admin-table td {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: var(--ad-text);
+  border-bottom: 1px solid var(--ad-border);
+  vertical-align: middle;
+  transition: background 0.15s;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover td {
+  background: var(--ad-card-hover);
+}
+
+/* ─── Scrollbar — matches site ─────────────────────────────────────────────── */
+.admin-dark ::-webkit-scrollbar        { width: 5px; height: 5px; }
+.admin-dark ::-webkit-scrollbar-track  { background: transparent; }
+.admin-dark ::-webkit-scrollbar-thumb  { background: #454650; border-radius: 99px; }
+.admin-dark ::-webkit-scrollbar-thumb:hover { background: #b7c4ff; }
+
+/* ─── Login background — mirrors site's dark + primary glow ───────────────── */
+.admin-login-bg {
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 25%, rgba(183,196,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 85% 75%, rgba(75,91,153,0.10) 0%,  transparent 55%),
+    radial-gradient(ellipse 45% 35% at 65% 10%, rgba(183,196,255,0.07) 0%, transparent 50%),
+    #0A0C14;
+}
+
+/* ─── Stat Card — primary border glow ─────────────────────────────────────── */
+.admin-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(183,196,255,0.3), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Prose ────────────────────────────────────────────────────────────────── */
+.admin-prose {
+  color: var(--ad-text);
+  line-height: 1.65;
+  font-size: 0.875rem;
+}
