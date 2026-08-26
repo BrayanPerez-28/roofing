@@ -12,23 +12,6 @@
  */
 const nextConfig = {
   allowedDevOrigins: ['192.168.56.1'],
-  // Disabled static export so API routes can run in Next.js.
-  // The project can still be deployed as a standard Next.js app.
-
-  // Required for static export — disables server-side image optimization
-  images: {
-    unoptimized: true,
-    // Allow external image domains used in design assets
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-      },
-    ],
-  },
-
-  // Trailing slash ensures clean URLs on static servers (e.g., /services/ → services/index.html)
-  trailingSlash: true,
 };
 
 module.exports = nextConfig;

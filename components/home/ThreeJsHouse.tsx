@@ -1,7 +1,13 @@
 'use client';
-
+import dynamic from 'next/dynamic';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+
+
+const ThreeJsHouse = dynamic(() => import('./ThreeJsHouse'), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gray-100 animate-pulse">Cargando 3D...</div> 
+});
 
 export default function HouseHologram() {
   const mountRef = useRef<HTMLDivElement>(null);
