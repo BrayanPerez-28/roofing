@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+
+
 import { Inter, Montserrat } from 'next/font/google';
 
 
