@@ -44,21 +44,23 @@ export const CONTACT_INFO = {
 // ─── Brand ───────────────────────────────────────────────────────────────────
 
 export const BRAND = {
-  name:        "Perez Premium Roofing",
-  fullName:    "Perez Premium Roofing INC",
-  tagline:     "Licensed, Bonded & Insured — CSLB #1135746",
-  established: "2003",
-  license:     "CSLB #1135746",
-  copyright:   `© ${new Date().getFullYear()} Perez Premium Roofing INC. All rights reserved. CSLB #1135746`,
+  name:            "Perez Premium Roofing",
+  fullName:        "Perez Premium Roofing INC",
+  tagline:         "Licensed, Bonded & Insured — CSLB #1135746",
+  foundedYear:     2003,
+  established:     "2003",                                      // display string ("since 2003")
+  yearsExperience: new Date().getFullYear() - 2003,             // e.g. 23 in 2026, auto-increments
+  license:         "CSLB #1135746",
+  copyright:       `© ${new Date().getFullYear()} Perez Premium Roofing INC. All rights reserved. CSLB #1135746`,
 };
 
 // ─── Stats ───────────────────────────────────────────────────────────────────
 
 export const HOME_STATS = [
-  { value: 800,  suffix: "+",    label: "Projects Completed" },
-  { value: 20,   suffix: "+ Yrs",label: "Industry Experience" },
-  { value: 95,   suffix: ".5%",  label: "Customer Satisfaction" },
-  { value: 100,  suffix: "%",    label: "Recommended by Clients" },
+  { value: 800,                      suffix: "+",    label: "Projects Completed" },
+  { value: BRAND.yearsExperience,     suffix: "+ Yrs",label: "Industry Experience" },
+  { value: 95,                        suffix: ".5%",  label: "Customer Satisfaction" },
+  { value: 100,                       suffix: "%",    label: "Recommended by Clients" },
 ];
 
 // ─── Services Detail ─────────────────────────────────────────────────────────
@@ -255,7 +257,7 @@ export const WHY_CHOOSE_US = [
   },
   {
     icon: "workspace_premium",
-    title: "20+ Years of Excellence",
+    title: `${BRAND.yearsExperience}+ Years of Excellence`,
     desc: "Two decades delivering quality roofing solutions designed to stand the test of time for hundreds of Bay Area families and businesses.",
   },
   {
@@ -291,7 +293,7 @@ export const FAQ = [
   {
     question: "How much experience does the company have in the roofing industry?",
     answer:
-      "We have over 20 years of experience in the roofing industry. Over those two decades, we have worked with hundreds of families and business owners throughout the San Francisco Bay Area, delivering quality and commitment on every project.",
+      `We have over ${BRAND.yearsExperience} years of experience in the roofing industry. Over those decades, we have worked with hundreds of families and business owners throughout the San Francisco Bay Area, delivering quality and commitment on every project.`,
   },
   {
     question: "What types of roofs do you install or repair?",

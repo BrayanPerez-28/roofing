@@ -16,6 +16,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { BRAND } from '@/lib/constants';
 
 // Three.js component — must be loaded client-side only (no SSR)
 const ThreeJsHouse = dynamic(() => import('./ThreeJsHouse'), { ssr: false });
@@ -258,7 +259,7 @@ export default function HeroSection() {
             className="flex gap-8 mt-4 pt-6 border-t border-white/10"
           >
             {[
-              { value: '20+', label: 'Years in Bay Area' },
+              { value: `${BRAND.yearsExperience}+`, label: 'Years in Bay Area' },
               { value: '800+', label: 'Projects Completed' },
               { value: '100%', label: 'Client Recommended' },
             ].map((stat) => (

@@ -20,10 +20,17 @@ export const metadata: Metadata = {
 const contactCards = [
   {
     icon: <Phone size={20} />,
-    label: 'Call Us',
+    label: 'Main – Office',
     value: CONTACT_INFO.phone,
     href: CONTACT_INFO.phoneHref,
-    id: 'contact-phone-card',
+    id: 'contact-phone-main-card',
+  },
+  {
+    icon: <Phone size={20} />,
+    label: 'Emergencies – Owner Direct',
+    value: CONTACT_INFO.phoneEmergency,
+    href: CONTACT_INFO.phoneEmergencyHref,
+    id: 'contact-phone-emergency-card',
   },
   {
     icon: <Mail size={20} />,
@@ -53,9 +60,10 @@ export default function ContactPage() {
           <AlertTriangle size={18} className="shrink-0" />
           <span className="font-label-md text-label-md uppercase tracking-widest">
             24/7 Emergency Repairs Available — Call{' '}
-            <a href={CONTACT_INFO.phoneHref} className="underline hover:opacity-80 transition-opacity">
-              {CONTACT_INFO.phone}
+            <a href={CONTACT_INFO.phoneEmergencyHref} className="underline hover:opacity-80 transition-opacity">
+              {CONTACT_INFO.phoneEmergency}
             </a>
+            {' '}(Owner Direct)
           </span>
         </div>
       </div>

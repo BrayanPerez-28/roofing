@@ -3,15 +3,14 @@
 /**
  * components/ui/AnimatedCounter.tsx
  *
- * Counts up from 0 to a target value when scrolled into view.
- * Uses Framer Motion's useInView + useMotionValue + useTransform.
+ * Progressive Enhancement counter:
+ *  - SSR / no-JS: renders the final value immediately (no "0" flash)
+ *  - JS hydrated: counts up from 0 when scrolled into view
  *
  * Usage:
- *   <AnimatedCounter value={10000} suffix="+" label="Roofs Installed" />
- *   <AnimatedCounter value={98} suffix="%" label="Client Satisfaction" duration={2} />
+ *   <AnimatedCounter value={800} suffix="+" label="Projects Completed" />
+ *   <AnimatedCounter value={95}  suffix=".5%" label="Customer Satisfaction" />
  */
-
-'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { useInView, useMotionValue, useSpring } from 'framer-motion';
@@ -39,8 +38,18 @@ export default function AnimatedCounter({
   labelClassName,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
+
+  /**
+   * hasMounted: false on first render (SSR + hydration).
+   * We show the final value until JS is ready, then animate.
+   * This prevents:
+   *  1. "0" flash on raw HTML / slow connection
+   *  2. React hydration mismatch (server vs client initial state)
+   */
+  const [hasMounted, setHasMounted] = useState(false);
+  const [displayValue, setDisplayValue] = useState(value); // ← final value for SSR
+
   const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const [displayValue, setDisplayValue] = useState(0);
 
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, {
@@ -49,18 +58,30 @@ export default function AnimatedCounter({
     duration,
   });
 
+  // Mark as mounted after first client render
   useEffect(() => {
-    if (isInView) {
-      motionValue.set(value);
-    }
-  }, [isInView, motionValue, value]);
+    setHasMounted(true);
+  }, []);
 
+  // Once mounted + in view → start animation from 0
   useEffect(() => {
+    if (hasMounted && isInView) {
+      setDisplayValue(0);       // reset display to 0 right before animation
+      motionValue.set(0);
+      // Small tick to ensure React paints the 0 before springing
+      const id = requestAnimationFrame(() => motionValue.set(value));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [hasMounted, isInView, motionValue, value]);
+
+  // Subscribe to spring updates (only after mount)
+  useEffect(() => {
+    if (!hasMounted) return;
     const unsubscribe = springValue.on('change', (latest) => {
       setDisplayValue(Math.floor(latest));
     });
     return unsubscribe;
-  }, [springValue]);
+  }, [hasMounted, springValue]);
 
   return (
     <div ref={ref} className={cn('flex flex-col items-center text-center', className)}>
@@ -69,6 +90,8 @@ export default function AnimatedCounter({
           'font-headline-lg text-headline-lg-mobile md:text-headline-lg font-extrabold text-on-surface',
           valueClassName
         )}
+        aria-label={`${prefix}${value}${suffix}`}
+        aria-live="polite"
       >
         {prefix}
         {displayValue.toLocaleString()}
@@ -85,4 +108,3 @@ export default function AnimatedCounter({
     </div>
   );
 }
-

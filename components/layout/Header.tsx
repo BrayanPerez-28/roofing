@@ -186,10 +186,13 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-3">
             <a
               href={CONTACT_INFO.phoneHref}
-              className="flex items-center gap-2 font-button text-label-md text-on-surface-variant hover:text-primary transition-colors"
+              className="flex flex-col items-start font-button text-label-md text-on-surface-variant hover:text-primary transition-colors"
             >
-              <Phone size={14} />
-              <span>{CONTACT_INFO.phone}</span>
+              <span className="flex items-center gap-2">
+                <Phone size={14} />
+                {CONTACT_INFO.phone}
+              </span>
+              <span className="text-xs text-outline pl-5">Main – Office</span>
             </a>
             <Link
               href="/contact"
@@ -301,13 +304,28 @@ export default function Header() {
 
               {/* Drawer Footer CTA */}
               <div className="p-4 border-t border-white/10 flex flex-col gap-3">
-                <a
-                  href={CONTACT_INFO.phoneHref}
-                  className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md"
-                >
-                  <Phone size={16} />
-                  {CONTACT_INFO.phone}
-                </a>
+                  <div className="flex flex-col gap-2">
+                    <div>
+                      <a
+                        href={CONTACT_INFO.phoneHref}
+                        className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md"
+                      >
+                        <Phone size={16} />
+                        {CONTACT_INFO.phone}
+                      </a>
+                      <p className="text-xs text-center text-outline mt-0.5">Main – Office</p>
+                    </div>
+                    <div>
+                      <a
+                        href={CONTACT_INFO.phoneEmergencyHref}
+                        className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md border-error/40 text-error hover:text-error"
+                      >
+                        <Phone size={16} />
+                        {CONTACT_INFO.phoneEmergency}
+                      </a>
+                      <p className="text-xs text-center text-outline mt-0.5">Emergencies – Owner Direct</p>
+                    </div>
+                  </div>
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}

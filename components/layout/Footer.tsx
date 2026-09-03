@@ -64,13 +64,26 @@ export default function Footer() {
 
             {/* Contact quick-links */}
             <div className="flex flex-col gap-2 mt-2">
-              <a
-                href={CONTACT_INFO.phoneHref}
-                className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
-              >
-                <Phone size={14} className="text-primary" />
-                {CONTACT_INFO.phone}
-              </a>
+              <div>
+                <a
+                  href={CONTACT_INFO.phoneHref}
+                  className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                >
+                  <Phone size={14} className="text-primary" />
+                  {CONTACT_INFO.phone}
+                </a>
+                <p className="text-xs text-outline pl-5 -mt-0.5">Main – Office</p>
+              </div>
+              <div>
+                <a
+                  href={CONTACT_INFO.phoneEmergencyHref}
+                  className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
+                >
+                  <Phone size={14} className="text-primary" />
+                  {CONTACT_INFO.phoneEmergency}
+                </a>
+                <p className="text-xs text-outline pl-5 -mt-0.5">Emergencies – Owner Direct</p>
+              </div>
               <a
                 href={CONTACT_INFO.emailHref}
                 className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md"
@@ -159,11 +172,12 @@ export default function Footer() {
                 24/7 Emergency
               </p>
               <a
-                href={CONTACT_INFO.phoneHref}
+                href={CONTACT_INFO.phoneEmergencyHref}
                 className="font-headline-md text-sm font-bold text-on-surface hover:text-primary transition-colors"
               >
-                {CONTACT_INFO.phone}
+                {CONTACT_INFO.phoneEmergency}
               </a>
+              <p className="text-xs text-outline mt-0.5">Owner Direct Line</p>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
  */
 import type { Metadata } from 'next';
 import ServiceDetailPage from '../ServiceDetailPage';
-import { SERVICES_DATA } from '@/lib/constants';
+import { SERVICES_DATA, BRAND } from '@/lib/constants';
 
 const data = SERVICES_DATA.find((s) => s.slug === 'gutters')!;
 
@@ -21,7 +21,7 @@ export default function Page() {
       icon={data.icon}
       slug={data.slug}
       stats={[
-        { value: 20, suffix: '+', label: 'Years Installing Gutters' },
+        { value: BRAND.yearsExperience, suffix: '+', label: 'Years Installing Gutters' },
         { value: 100, suffix: '%', label: 'Seamless Options' },
         { value: 3, suffix: ' Types', label: 'Aluminum, Copper, Steel' },
       ]}

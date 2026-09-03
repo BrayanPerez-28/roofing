@@ -3,7 +3,7 @@
  */
 import type { Metadata } from 'next';
 import ServiceDetailPage from '../ServiceDetailPage';
-import { SERVICES_DATA } from '@/lib/constants';
+import { SERVICES_DATA, BRAND } from '@/lib/constants';
 
 const data = SERVICES_DATA.find((s) => s.slug === 'wood-shingles')!;
 
@@ -23,7 +23,7 @@ export default function Page() {
       stats={[
         { value: 30, suffix: '+', label: 'Year Lifespan' },
         { value: 100, suffix: '%', label: 'Natural Material' },
-        { value: 20, suffix: '+', label: 'Years Experience' },
+        { value: BRAND.yearsExperience, suffix: '+', label: 'Years Experience' },
       ]}
       benefits={data.benefits}
     />

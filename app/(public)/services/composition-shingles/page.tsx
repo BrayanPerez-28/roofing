@@ -3,13 +3,13 @@
  */
 import type { Metadata } from 'next';
 import ServiceDetailPage from '../ServiceDetailPage';
-import { SERVICES_DATA } from '@/lib/constants';
+import { SERVICES_DATA, BRAND } from '@/lib/constants';
 
 const data = SERVICES_DATA.find((s) => s.slug === 'composition-shingles')!;
 
 export const metadata: Metadata = {
   title: 'Composition Shingles | Perez Premium Roofing | Bay Area CA',
-  description: 'Professional composition shingle installation in the Bay Area. Durable, beautiful, and backed by 20+ years of experience. CSLB #1135746. Free estimates.',
+  description: `Professional composition shingle installation in the Bay Area. Durable, beautiful, and backed by ${BRAND.yearsExperience}+ years of experience. CSLB #1135746. Free estimates.`,
 };
 
 export default function Page() {

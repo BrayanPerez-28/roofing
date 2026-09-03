@@ -11,10 +11,22 @@ import LeafletMapClient from '@/components/maps/LeafletMapClient';
 import { MapPin } from 'lucide-react';
 
 const COVERAGE_ZONES = [
-  { label: 'North Bay', detail: 'Santa Rosa · Napa · Marin' },
-  { label: 'East Bay', detail: 'Oakland · Berkeley · Fremont' },
-  { label: 'South Bay', detail: 'San Jose · Santa Clara · Palo Alto' },
-  { label: 'Peninsula', detail: 'Daly City · Redwood City · SF' },
+  {
+    label: 'North Bay',
+    detail: 'Santa Rosa · Bodega Bay · Sonoma · Napa · San Rafael · Marin',
+  },
+  {
+    label: 'East Bay',
+    detail: 'Oakland · Berkeley · Fremont · Concord · Walnut Creek',
+  },
+  {
+    label: 'South Bay',
+    detail: 'San Jose · Santa Clara · Cupertino · Sunnyvale · Campbell · Morgan Hill · Gilroy · Milpitas · Mountain View',
+  },
+  {
+    label: 'Peninsula',
+    detail: 'San Francisco · Daly City · Pacifica · San Mateo · Half Moon Bay · Palo Alto',
+  },
 ];
 
 export default function MapPanel() {
@@ -54,7 +66,7 @@ export default function MapPanel() {
           <div className="flex items-center gap-1.5">
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-primary/80 ring-2 ring-primary/30" />
             <span className="text-[10px] text-on-surface-variant font-medium uppercase tracking-widest">
-              50 km radius
+              25+ Cities
             </span>
           </div>
         </div>

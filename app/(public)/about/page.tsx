@@ -7,12 +7,12 @@ import type { Metadata } from 'next';
 import Button from '@/components/ui/Button';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import ReviewsSection from '@/components/reviews/ReviewsSection';
-import { HOME_STATS, COMPANY_VALUES, CONTACT_INFO, FAQ } from '@/lib/constants';
+import { HOME_STATS, COMPANY_VALUES, CONTACT_INFO, FAQ, BRAND } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'About Us | Perez Premium Roofing INC | Bay Area CA',
   description:
-    'Over 20 years of roofing excellence in the Bay Area, CA. Licensed contractor CSLB #1135746 — committed to quality, integrity, and lasting results for residential and commercial clients.',
+    `Over ${BRAND.yearsExperience} years of roofing excellence in the Bay Area, CA. Licensed contractor CSLB #1135746 — committed to quality, integrity, and lasting results for residential and commercial clients.`,
 };
 
 const PILLARS = [
@@ -49,7 +49,7 @@ export default function AboutPage() {
           </h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-6">
             Perez Premium Roofing INC is a company committed to providing durable, safe and
-            aesthetically impeccable roofing solutions in the Bay Area, CA. With over 20 years
+            aesthetically impeccable roofing solutions in the Bay Area, CA. With over {BRAND.yearsExperience} years
             of experience in the industry and backed by our state license CSLB #1135746, we
             pride ourselves in providing high quality services to both residential and commercial
             customers.
@@ -132,7 +132,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
               <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-4">
-                Over 20 Years of Excellence
+                Over {BRAND.yearsExperience} Years of Excellence
               </span>
               <h2
                 id="experience-heading"
@@ -141,7 +141,7 @@ export default function AboutPage() {
                 Your Local Roofing Company <span className="text-gradient">You Can Trust</span>
               </h2>
               <p className="font-body-lg text-body-lg text-on-surface-variant mb-4">
-                With over 20 years of industry experience, Perez Premium Roofing INC has
+                With over {BRAND.yearsExperience} years of industry experience, Perez Premium Roofing INC has
                 established itself as a trusted local company in the Bay Area, CA. Our track
                 record speaks for itself: two decades of delivering quality, commitment and
                 roofing solutions designed to stand the test of time.
@@ -161,7 +161,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 gap-4">
               {[
                 { icon: 'verified', label: 'Licensed, Bonded & Insured', detail: 'CSLB #1135746' },
-                { icon: 'workspace_premium', label: '20+ Years Experience', detail: 'Bay Area, CA' },
+                { icon: 'workspace_premium', label: `${BRAND.yearsExperience}+ Years Experience`, detail: 'Bay Area, CA' },
                 { icon: 'handshake', label: 'Free Estimates', detail: 'No Obligation' },
                 { icon: 'emergency', label: '24/7 Emergency Line', detail: CONTACT_INFO.phoneEmergency },
                 { icon: 'home', label: 'Residential & Commercial', detail: 'All Roof Types' },

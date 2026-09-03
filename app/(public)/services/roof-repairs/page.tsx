@@ -3,7 +3,7 @@
  */
 import type { Metadata } from 'next';
 import ServiceDetailPage from '../ServiceDetailPage';
-import { SERVICES_DATA } from '@/lib/constants';
+import { SERVICES_DATA, BRAND } from '@/lib/constants';
 
 const data = SERVICES_DATA.find((s) => s.slug === 'roof-repairs')!;
 
@@ -24,7 +24,7 @@ export default function Page() {
       stats={[
         { value: 24, suffix: ' Hr', label: 'Emergency Response' },
         { value: 100, suffix: '%', label: 'All Roof Types' },
-        { value: 20, suffix: '+', label: 'Years Experience' },
+        { value: BRAND.yearsExperience, suffix: '+', label: 'Years Experience' },
       ]}
       benefits={data.benefits}
     />

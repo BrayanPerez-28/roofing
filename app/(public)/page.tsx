@@ -30,12 +30,13 @@ import {
   COVERAGE_CITIES,
   COVERAGE_TEXT,
   CONTACT_INFO,
+  BRAND,
 } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Perez Premium Roofing INC | Bay Area CA | CSLB #1135746',
   description:
-    'Licensed Bay Area roofing contractor with 20+ years of experience. Composition shingles, concrete tile, metal roofs, flat roof PVC/TPO, and repairs. Free estimates — CSLB #1135746.',
+    `Licensed Bay Area roofing contractor with ${BRAND.yearsExperience}+ years of experience. Composition shingles, concrete tile, metal roofs, flat roof PVC/TPO, and repairs. Free estimates — CSLB #1135746.`,
 };
 
 export default function HomePage() {
@@ -245,10 +246,11 @@ export default function HomePage() {
               <div>
                 <p className="text-on-surface font-bold text-lg">24/7 Emergency</p>
                 <p className="text-on-surface-variant text-sm">
-                  <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-primary transition-colors">
-                    {CONTACT_INFO.phone}
+                  <a href={CONTACT_INFO.phoneEmergencyHref} className="hover:text-primary transition-colors">
+                    {CONTACT_INFO.phoneEmergency}
                   </a>
                 </p>
+                <p className="text-xs text-outline mt-0.5">Owner Direct Line</p>
               </div>
             </div>
           </div>
