@@ -104,7 +104,7 @@ function TypingIndicator() {
 const SUGGESTIONS = [
   'What roofing services do you offer?',
   'How much does a roof repair cost?',
-  '¿Cuánto cuesta un techo nuevo?',
+  'How much does a new roof cost?',
   'Do you do free estimates?',
 ];
 
@@ -334,9 +334,8 @@ export default function ChatBot() {
                       variants={messageVariants}
                       initial="hidden"
                       animate="visible"
-                      className={`flex items-end gap-2 ${
-                        msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-                      }`}
+                      className={`flex items-end gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                        }`}
                     >
                       {/* Avatar */}
                       {msg.role === 'assistant' && (
@@ -353,24 +352,23 @@ export default function ChatBot() {
                       )}
                       {/* Bubble */}
                       <div
-                        className={`max-w-[78%] px-4 py-3 text-sm leading-relaxed ${
-                          msg.role === 'user'
+                        className={`max-w-[78%] px-4 py-3 text-sm leading-relaxed ${msg.role === 'user'
                             ? 'rounded-2xl rounded-br-sm'
                             : 'rounded-2xl rounded-bl-sm'
-                        }`}
+                          }`}
                         style={
                           msg.role === 'user'
                             ? {
-                                background:
-                                  'linear-gradient(135deg, #b7c4ff 0%, #dde1ff 100%)',
-                                color: '#1b2b68',
-                                fontWeight: 500,
-                              }
+                              background:
+                                'linear-gradient(135deg, #b7c4ff 0%, #dde1ff 100%)',
+                              color: '#1b2b68',
+                              fontWeight: 500,
+                            }
                             : {
-                                background: 'rgba(255,255,255,0.06)',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                                color: '#e5e2e1',
-                              }
+                              background: 'rgba(255,255,255,0.06)',
+                              border: '1px solid rgba(255,255,255,0.08)',
+                              color: '#e5e2e1',
+                            }
                         }
                       >
                         {renderContent(msg.content)}
@@ -507,9 +505,8 @@ export default function ChatBot() {
         whileHover="hover"
         whileTap="tap"
         onClick={() => setIsOpen((v) => !v)}
-        className={`fixed bottom-6 right-6 z-[9998] flex items-center justify-center w-14 h-14 rounded-full shadow-2xl ${
-          !isOpen ? 'chat-fab-pulse' : ''
-        }`}
+        className={`fixed bottom-6 right-6 z-[9998] flex items-center justify-center w-14 h-14 rounded-full shadow-2xl ${!isOpen ? 'chat-fab-pulse' : ''
+          }`}
         style={{
           background: isOpen
             ? 'rgba(20,22,35,0.95)'
