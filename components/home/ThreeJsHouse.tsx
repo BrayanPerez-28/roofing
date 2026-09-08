@@ -372,7 +372,7 @@ export default function HouseHologram() {
     let targetX = 0;
     let targetY = 0;
     let animationFrameId: number;
-    const clock = new THREE.Clock();
+    const clock = new THREE.Timer();
 
     const handleMouseMove = (event: MouseEvent) => {
       const windowHalfX = window.innerWidth / 2;
@@ -384,7 +384,8 @@ export default function HouseHologram() {
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
+      clock.update();
+      const t = clock.getElapsed();
 
       // Rotación constante + inclinación por mouse (parallax suavizado)
       group.rotation.y += 0.001;

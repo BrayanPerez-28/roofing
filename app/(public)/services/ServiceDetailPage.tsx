@@ -19,6 +19,7 @@ import SectionHeader from '@/components/ui/SectionHeader';
 import MediaCarousel from '@/components/ui/MediaCarousel';
 import VideoBackground from '@/components/ui/VideoBackground';
 import { VIDEOS, SERVICE_IMAGES } from '@/lib/mediaAssets';
+import { useServiceMedia } from '@/lib/useApiGallery';
 import ReviewsSection from '@/components/reviews/ReviewsSection';
 import type { SERVICES_DATA } from '@/lib/constants';
 
@@ -67,10 +68,16 @@ export default function ServiceDetailPage({
   benefits,
   videoSrc,
 }: ServiceDetailPageProps) {
-  const carouselImages = (SERVICE_IMAGES[slug] || []).map((src) => ({
-    src,
-    alt: `${title} project photo`,
-  }));
+  // API images (uploaded via admin) take priority over local fallbacks
+  const { images: apiImages } = useServiceMedia(slug);
+
+  const localImages = (SERVICE_IMAGES[slug] || []).map((src) => ({ src, alt: `${title} project photo` }));
+  const apiCarouselImages = apiImages.map((src) => ({ src, alt: `${title} project photo` }));
+
+  // Carousel: API images first, then local fallbacks (deduplicated)
+  const carouselImages = apiCarouselImages.length > 0
+    ? apiCarouselImages
+    : localImages;
 
   const heroVideo = videoSrc || SERVICE_VIDEOS[slug] || VIDEOS.hero;
   const fallbackImage = carouselImages[0]?.src;
@@ -166,6 +173,48 @@ export default function ServiceDetailPage({
             transition="slide"
             rounded
           />
+        </section>
+      )}
+
+      {/* ── API Photo Grid (only when there are API-uploaded photos) ── */}
+      {apiImages.length > 1 && (
+        <section className="section-padding max-w-container-max mx-auto" aria-label={`${title} gallery`}>
+          <div className="text-center mb-8">
+            <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-3">
+              Project Gallery
+            </span>
+            <h2 className="font-headline-md text-on-surface font-bold">
+              {title} — All Photos
+            </h2>
+            <p className="font-body-md text-body-md text-on-surface-variant mt-2">
+              {apiImages.length} photos from our completed {title.toLowerCase()} projects
+            </p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {apiImages.map((src, idx) => (
+              <motion.div
+                key={src}
+                className="relative aspect-square overflow-hidden rounded-xl cursor-zoom-in group"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: (idx % 8) * 0.05 }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={`${title} project photo ${idx + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/20 transition-all duration-300 flex items-center justify-center">
+                  <span className="text-white opacity-0 group-hover:opacity-100 transition-all duration-300 text-2xl drop-shadow-lg">
+                    🔍
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </section>
       )}
 

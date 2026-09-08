@@ -8,6 +8,9 @@ import type {
   LoginPayload,
   ReviewUpdatePayload,
   ContactUpdatePayload,
+  Service,
+  ServiceMedia,
+  ServiceUpdatePayload,
 } from "./types";
 
 // ─── Axios Instance ─────────────────────────────────────────────────────────────
@@ -101,6 +104,50 @@ export const contactsApi = {
 
   delete: (id: number) =>
     api.delete<ApiResponse>(`/admin/contacts/${id}`).then((r) => r.data),
+};
+
+// ─── Gallery Endpoints ──────────────────────────────────────────────────────────
+
+const BASE_URL_RAW = (
+  process.env.NEXT_PUBLIC_API_URL || "https://api.perezroofingpro.com"
+).replace(/\/+$/, "");
+
+export const galleryApi = {
+  // ── Servicios (público, no necesita token) ───────────────────────────────────
+  getServices: (): Promise<Service[]> =>
+    api.get<{ data: Service[] }>("/public/services").then((r) => r.data.data ?? (r.data as unknown as Service[])),
+
+  getGalleryByService: (slug: string): Promise<Service> =>
+    api.get<Service>(`/public/gallery/${slug}`).then((r) => r.data),
+
+  // ── Multimedia (requiere token) ──────────────────────────────────────────────
+  uploadMedia: (serviceId: number, files: File[]): Promise<ServiceMedia[]> => {
+    const formData = new FormData();
+    formData.append("service_id", String(serviceId));
+    files.forEach((f) => formData.append("files[]", f));
+    return api
+      .post<{ data: ServiceMedia[] }>("/admin/gallery/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((r) => r.data.data);
+  },
+
+  deleteMedia: (id: number): Promise<void> =>
+    api.delete(`/admin/gallery/media/${id}`).then(() => undefined),
+
+  // ── CRUD Servicios (requiere token) ──────────────────────────────────────────
+  createService: (payload: { name: string; slug: string }): Promise<Service> =>
+    api.post<{ data: Service }>("/admin/services", payload).then((r) => r.data.data),
+
+  updateService: (id: number, payload: ServiceUpdatePayload): Promise<Service> =>
+    api.put<{ data: Service }>(`/admin/services/${id}`, payload).then((r) => r.data.data),
+
+  deleteService: (id: number): Promise<void> =>
+    api.delete(`/admin/services/${id}`).then(() => undefined),
+
+  // ── Helpers ──────────────────────────────────────────────────────────────────
+  mediaUrl: (filePath: string): string =>
+    `${BASE_URL_RAW}/storage/${filePath}`,
 };
 
 export default api;

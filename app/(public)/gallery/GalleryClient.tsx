@@ -21,6 +21,7 @@ import {
   X, ChevronLeft, ChevronRight, ZoomIn, Play, Eye, Image as ImageIcon, Film, LayoutGrid,
 } from 'lucide-react';
 import { GALLERY_ITEMS, VIDEOS } from '@/lib/mediaAssets';
+import { useAllServicesMedia } from '@/lib/useApiGallery';
 import type { GalleryItem } from '@/lib/mediaAssets';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -541,11 +542,21 @@ export default function GalleryClient() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [visible,       setVisible]       = useState(PAGE_SIZE);
 
+  // Fetch API-uploaded photos and prepend them to the static gallery
+  const { galleryItems: apiItems } = useAllServicesMedia();
+
+  // Merge: API items first (most recent), then local items not already in API
+  const allItems = useMemo(() => {
+    const apiSrcs = new Set(apiItems.map((i) => i.src));
+    const local = GALLERY_ITEMS.filter((i) => !apiSrcs.has(i.src));
+    return [...apiItems, ...local];
+  }, [apiItems]);
+
   const filteredImages = useMemo(() =>
     category === 'all'
-      ? GALLERY_ITEMS
-      : GALLERY_ITEMS.filter((i) => i.category === category),
-    [category]
+      ? allItems
+      : allItems.filter((i) => i.category === category),
+    [category, allItems]
   );
 
   const mosaicItems = useMemo(() => {
@@ -593,7 +604,7 @@ export default function GalleryClient() {
               Our Portfolio
             </span>
             <h1 className="font-extrabold text-5xl md:text-7xl lg:text-8xl text-on-surface leading-none mb-6">
-              {GALLERY_ITEMS.length}+<br />
+              {allItems.length}+<br />
               <span className="text-gradient">Real Projects.</span>
             </h1>
             <p className="text-on-surface-variant text-lg md:text-xl max-w-xl mx-auto leading-relaxed">

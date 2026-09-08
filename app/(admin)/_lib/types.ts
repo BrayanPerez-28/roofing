@@ -75,6 +75,31 @@ export interface ContactUpdatePayload {
   message?: string;
 }
 
+// ─── Gallery / Media ───────────────────────────────────────────────────────────
+
+export interface ServiceMedia {
+  id: number;
+  service_id: number;
+  file_path: string;
+  media_type: "image" | "video";
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Service {
+  id: number;
+  name: string;
+  slug: string;
+  created_at: string;
+  updated_at: string;
+  media?: ServiceMedia[];
+}
+
+export interface ServiceUpdatePayload {
+  name?: string;
+  slug?: string;
+}
+
 // ─── UI State ──────────────────────────────────────────────────────────────────
 
 export type ToastType = "success" | "error" | "info" | "warning";

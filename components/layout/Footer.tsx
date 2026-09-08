@@ -3,7 +3,7 @@
 /**
  * components/layout/Footer.tsx
  *
- * 4-column footer: Brand/Logo | Services | Company | Legal
+ * 3-column footer: Brand/Logo | Services | Company
  * Design: Surface-Dark gradient, neon divider, "Built with Precision" tagline
  */
 
@@ -19,11 +19,7 @@ const companyLinks = [
   { label: 'Contact Us', href: '/contact' },
 ];
 
-const legalLinks = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Accessibility', href: '/accessibility' },
-];
+
 
 export default function Footer() {
   return (
@@ -36,7 +32,7 @@ export default function Footer() {
 
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
         {/* ── Main Grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-gutter">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-gutter">
 
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-4 sm:col-span-2 md:col-span-1">
@@ -150,22 +146,6 @@ export default function Footer() {
                 {link.label}
               </Link>
             ))}
-          </div>
-
-          {/* Column 4: Legal */}
-          <div className="flex flex-col gap-3">
-            <h3 className="font-label-md text-label-md text-on-surface uppercase tracking-widest mb-1">
-              Legal
-            </h3>
-            {legalLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-body-md text-body-md text-on-surface-variant hover:text-primary-fixed-dim transition-colors focus:underline decoration-primary"
-              >
-                {link.label}
-              </Link>
-            ))}
 
             <div className="mt-6 glass-panel rounded-lg p-3 border-glass-primary">
               <p className="font-label-md text-label-md text-primary text-xs uppercase tracking-widest mb-1">
@@ -180,6 +160,8 @@ export default function Footer() {
               <p className="text-xs text-outline mt-0.5">Owner Direct Line</p>
             </div>
           </div>
+
+
         </div>
 
         {/* ── Bottom Bar ── */}
