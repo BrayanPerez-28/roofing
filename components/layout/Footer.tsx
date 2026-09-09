@@ -78,7 +78,7 @@ export default function Footer() {
                   <Phone size={14} className="text-primary" />
                   {CONTACT_INFO.phoneEmergency}
                 </a>
-                <p className="text-xs text-outline pl-5 -mt-0.5">Emergencies – Owner Direct</p>
+                <p className="text-xs text-outline pl-5 -mt-0.5">Roofing Emergencies</p>
               </div>
               <a
                 href={CONTACT_INFO.emailHref}

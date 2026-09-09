@@ -4,15 +4,23 @@
 /* ─── CSS Variables ─────────────────────────────────────────────────────────── */
 :root,
 .admin-dark {
-  --ad-bg:          #0A0C14;
-  --ad-surface:     #0e0e0e;
-  --ad-card:        rgba(255,255,255,0.02);
-  --ad-card-hover:  rgba(255,255,255,0.05);
-  --ad-border:      rgba(255,255,255,0.08);
-  --ad-border-hover:rgba(255,255,255,0.15);
-  --ad-text:        #e5e2e1;
-  --ad-text-muted:  rgba(229,226,225,0.5);
-  --ad-text-faint:  rgba(229,226,225,0.3);
+  --ad-bg:            #0A0C14;
+  --ad-surface:       #0e0e0e;
+  --ad-card:          rgba(255,255,255,0.02);
+  --ad-card-hover:    rgba(255,255,255,0.05);
+  --ad-border:        rgba(255,255,255,0.08);
+  --ad-border-hover:  rgba(255,255,255,0.15);
+  --ad-text:          #e5e2e1;
+  --ad-text-muted:    rgba(229,226,225,0.5);
+  --ad-text-faint:    rgba(229,226,225,0.3);
+
+  /* Topbar / Sidebar */
+  --ad-topbar-bg:     rgba(10,12,20,0.92);
+  --ad-sidebar-bg:    rgba(10,12,20,0.97);
+  --ad-input-bg:      rgba(255,255,255,0.05);
+  --ad-input-border:  rgba(255,255,255,0.10);
+  --ad-hover-bg:      rgba(255,255,255,0.06);
+  --ad-dropdown-bg:   rgba(10,12,20,0.97);
 
   /* Primary — same as site: #b7c4ff lavender */
   --ad-primary:        #b7c4ff;
@@ -29,20 +37,34 @@
 }
 
 .admin-light {
-  --ad-bg:          #F4F4F5;
-  --ad-surface:     #FFFFFF;
-  --ad-card:        rgba(0,0,0,0.02);
-  --ad-card-hover:  rgba(0,0,0,0.04);
-  --ad-border:      rgba(0,0,0,0.08);
-  --ad-border-hover:rgba(0,0,0,0.14);
-  --ad-text:        #131313;
-  --ad-text-muted:  rgba(19,19,19,0.5);
-  --ad-text-faint:  rgba(19,19,19,0.35);
+  --ad-bg:            #F0F2F5;
+  --ad-surface:       #FFFFFF;
+  --ad-card:          rgba(0,0,0,0.025);
+  --ad-card-hover:    rgba(0,0,0,0.05);
+  --ad-border:        rgba(0,0,0,0.09);
+  --ad-border-hover:  rgba(0,0,0,0.18);
+  --ad-text:          #111827;
+  --ad-text-muted:    rgba(17,24,39,0.55);
+  --ad-text-faint:    rgba(17,24,39,0.38);
+
+  /* Topbar / Sidebar */
+  --ad-topbar-bg:     rgba(255,255,255,0.95);
+  --ad-sidebar-bg:    rgba(255,255,255,0.98);
+  --ad-input-bg:      rgba(0,0,0,0.04);
+  --ad-input-border:  rgba(0,0,0,0.12);
+  --ad-hover-bg:      rgba(0,0,0,0.05);
+  --ad-dropdown-bg:   rgba(255,255,255,0.98);
+
   --ad-primary:        #4b5b99;
   --ad-primary-dark:   #1b2b68;
   --ad-primary-dim:    #dde1ff;
   --ad-primary-muted:  rgba(75,91,153,0.12);
   --ad-primary-border: rgba(75,91,153,0.25);
+
+  --ad-success:  #16A34A;
+  --ad-error:    #DC2626;
+  --ad-info:     #2563EB;
+  --ad-warning:  #D97706;
 }
 
 /* ─── Base ─────────────────────────────────────────────────────────────────── */
@@ -132,9 +154,9 @@
 .admin-skeleton {
   background: linear-gradient(
     90deg,
-    rgba(255,255,255,0.04) 25%,
-    rgba(183,196,255,0.08) 50%,
-    rgba(255,255,255,0.04) 75%
+    var(--ad-card)       25%,
+    var(--ad-card-hover) 50%,
+    var(--ad-card)       75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s ease infinite;
@@ -186,6 +208,11 @@
 .admin-dark ::-webkit-scrollbar-thumb  { background: #454650; border-radius: 99px; }
 .admin-dark ::-webkit-scrollbar-thumb:hover { background: #b7c4ff; }
 
+.admin-light ::-webkit-scrollbar        { width: 5px; height: 5px; }
+.admin-light ::-webkit-scrollbar-track  { background: transparent; }
+.admin-light ::-webkit-scrollbar-thumb  { background: #c5c8d0; border-radius: 99px; }
+.admin-light ::-webkit-scrollbar-thumb:hover { background: #4b5b99; }
+
 /* ─── Login background — mirrors site's dark + primary glow ───────────────── */
 .admin-login-bg {
   background:
@@ -220,3 +247,47 @@
   line-height: 1.65;
   font-size: 0.875rem;
 }
+
+/* ─── Light Mode Global Overrides ────────────────────────────────────────────
+   Force all hardcoded white-based Tailwind classes to use dark text/borders
+   so every admin page is fully readable without per-page edits.
+   ─────────────────────────────────────────────────────────────────────────── */
+.admin-light .text-white                { color: #111827 !important; }
+.admin-light .text-white\/80            { color: rgba(17,24,39,0.85) !important; }
+.admin-light .text-white\/70            { color: rgba(17,24,39,0.72) !important; }
+.admin-light .text-white\/60            { color: rgba(17,24,39,0.62) !important; }
+.admin-light .text-white\/50            { color: rgba(17,24,39,0.55) !important; }
+.admin-light .text-white\/40            { color: rgba(17,24,39,0.45) !important; }
+.admin-light .text-white\/35            { color: rgba(17,24,39,0.38) !important; }
+.admin-light .text-white\/30            { color: rgba(17,24,39,0.32) !important; }
+.admin-light .text-white\/25            { color: rgba(17,24,39,0.28) !important; }
+.admin-light .text-white\/20            { color: rgba(17,24,39,0.22) !important; }
+
+.admin-light .placeholder\:text-white\/30::placeholder { color: rgba(17,24,39,0.35) !important; }
+.admin-light .placeholder\:text-white\/25::placeholder { color: rgba(17,24,39,0.30) !important; }
+
+.admin-light .border-white\/10          { border-color: rgba(0,0,0,0.10) !important; }
+.admin-light .border-white\/8           { border-color: rgba(0,0,0,0.08) !important; }
+.admin-light .border-white\/5           { border-color: rgba(0,0,0,0.06) !important; }
+
+.admin-light .bg-white\/5              { background: rgba(0,0,0,0.04) !important; }
+.admin-light .bg-white\/4              { background: rgba(0,0,0,0.03) !important; }
+.admin-light .bg-white\/2              { background: rgba(0,0,0,0.015) !important; }
+
+.admin-light .hover\:bg-white\/5:hover  { background: rgba(0,0,0,0.05) !important; }
+.admin-light .hover\:bg-white\/8:hover  { background: rgba(0,0,0,0.07) !important; }
+
+/* Page headings and section titles */
+.admin-light h1, .admin-light h2, .admin-light h3,
+.admin-light h4, .admin-light h5, .admin-light h6 { color: #111827; }
+
+/* Form inputs in settings */
+.admin-light input:not([type="submit"]):not([type="button"]),
+.admin-light textarea,
+.admin-light select {
+  color: #111827 !important;
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+}
+.admin-light input::placeholder,
+.admin-light textarea::placeholder { color: rgba(17,24,39,0.35) !important; }

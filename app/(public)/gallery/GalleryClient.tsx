@@ -42,15 +42,14 @@ type MosaicItem = GalleryItem | VideoGalleryItem;
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const CATEGORIES: { id: CategoryId; label: string }[] = [
-  { id: 'all',           label: 'All Projects' },
-  { id: 'residential',   label: 'Residential' },
-  { id: 'commercial',    label: 'Commercial' },
-  { id: 'shingles',      label: 'Composition Shingles' },
-  { id: 'tile',          label: 'Concrete Tile Roofing' },
-  { id: 'flat',          label: 'Flat Roof PVC & TPO' },
-  { id: 'gutters',       label: 'Gutters & Downspouts' },
-  { id: 'maintenance',   label: 'Maintenance' },
-  { id: 'before-after',  label: 'Before & After' },
+  { id: 'all',      label: 'All Projects' },
+  { id: 'shingles', label: 'Composition Shingles' },
+  { id: 'tile',     label: 'Concrete Tile' },
+  { id: 'flat',     label: 'Flat Roof PVC/TPO' },
+  { id: 'metal',    label: 'Standing Seam Metal' },
+  { id: 'wood',     label: 'Wood Shingles' },
+  { id: 'repairs',  label: 'Roof Repairs' },
+  { id: 'gutters',  label: 'Gutters & Downspouts' },
 ];
 
 const CAT_LABEL: Record<string, string> = Object.fromEntries(
@@ -63,21 +62,14 @@ const VIDEO_ITEMS: VideoGalleryItem[] = [
     src: VIDEOS.hero,
     poster: '/multimedia/img/Composition%20Shingles/roof3.jpeg',
     alt: 'Bay Area Roofing — Aerial Project Overview',
-    category: 'residential',
-  },
-  {
-    isVideo: true,
-    src: VIDEOS.services,
-    poster: '/multimedia/img/Composition%20Shingles/roof2.jpeg',
-    alt: 'On-Site Roofing Project',
-    category: 'commercial',
+    category: 'shingles',
   },
   {
     isVideo: true,
     src: VIDEOS.maintenance,
     poster: '/multimedia/img/Roof%20Repairs/IN-Roof-Repair-and-Roof-Replacement%20-%20Copy%20-%20Copy.jpg',
     alt: 'Roof Maintenance & Repair Work',
-    category: 'maintenance',
+    category: 'repairs',
   },
 ];
 

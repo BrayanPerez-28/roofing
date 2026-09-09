@@ -34,9 +34,9 @@ const SLUG_TO_CATEGORY: Record<string, GalleryItem['category']> = {
   'concrete-tile':        'tile',
   'flat-roof':            'flat',
   'gutters':              'gutters',
-  'metal-roofs':          'residential',
-  'roof-repairs':         'maintenance',
-  'wood-shingles':        'shingles',
+  'metal-roofs':          'metal',
+  'roof-repairs':         'repairs',
+  'wood-shingles':        'wood',
 };
 
 interface ApiMedia {
@@ -116,7 +116,7 @@ export function useAllServicesMedia(): {
         results.forEach((result) => {
           if (result.status !== 'fulfilled') return;
           const svc = result.value;
-          const category = SLUG_TO_CATEGORY[svc.slug] ?? 'residential';
+          const category = SLUG_TO_CATEGORY[svc.slug] ?? 'shingles';
           (svc.media ?? []).forEach((m) => {
             if (m.media_type === 'image') {
               items.push({

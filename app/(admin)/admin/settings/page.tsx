@@ -30,11 +30,21 @@ export default function SettingsPage() {
 
     setIsSavingPass(true);
     try {
-      // Using the register-style flow — POST to update password via update endpoint
-      // Since the API doesn't have a dedicated change-password endpoint, we notify the user
-      toast.info("Password change is handled by your admin credentials. Contact the system administrator.");
-    } catch {
-      toast.error("Failed to change password");
+      await authApi.updatePassword({
+        current_password: currentPass,
+        password: newPass,
+        password_confirmation: confirmPass,
+      });
+      toast.success("Password updated successfully!");
+      setCurrentPass("");
+      setNewPass("");
+      setConfirmPass("");
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        "Failed to update password. Please check your current password and try again.";
+      setPassError(msg);
+      toast.error(msg);
     } finally {
       setIsSavingPass(false);
     }

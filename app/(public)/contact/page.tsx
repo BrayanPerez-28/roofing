@@ -27,7 +27,7 @@ const contactCards = [
   },
   {
     icon: <Phone size={20} />,
-    label: 'Emergencies – Owner Direct',
+    label: 'Roofing Emergencies',
     value: CONTACT_INFO.phoneEmergency,
     href: CONTACT_INFO.phoneEmergencyHref,
     id: 'contact-phone-emergency-card',

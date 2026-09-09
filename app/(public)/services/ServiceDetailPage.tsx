@@ -48,8 +48,8 @@ interface ServiceDetailPageProps {
 
 // Map service slug to a video
 const SERVICE_VIDEOS: Record<string, string> = {
-  'flat-roof':            VIDEOS.services,
-  'concrete-tile':        VIDEOS.services,
+  'flat-roof':            VIDEOS.maintenance,
+  'concrete-tile':        VIDEOS.maintenance,
   'composition-shingles': VIDEOS.hero,
   'metal-roofs':          VIDEOS.hero,
   'wood-shingles':        VIDEOS.hero,

@@ -43,20 +43,34 @@ export function Modal({ isOpen, onClose, title, children, maxWidth = "md", foote
 
       {/* Panel */}
       <div
-        className={`relative w-full ${widths[maxWidth]} rounded-2xl border border-white/10 bg-[#111112] shadow-2xl shadow-black/50 animate-[slideUpFade_0.25s_ease] overflow-hidden`}
+        className={`relative w-full ${widths[maxWidth]} rounded-2xl border shadow-2xl animate-[slideUpFade_0.25s_ease] overflow-hidden`}
+        style={{
+          background: "var(--ad-sidebar-bg)",
+          borderColor: "var(--ad-border)",
+          boxShadow: "0 25px 80px rgba(0,0,0,0.3)",
+        }}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? "modal-title" : undefined}
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/8">
-            <h2 id="modal-title" className="text-base font-semibold text-white">
+          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "var(--ad-border)" }}>
+            <h2 id="modal-title" className="text-base font-semibold" style={{ color: "var(--ad-text)" }}>
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/8 transition-all"
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+              style={{ color: "var(--ad-text-faint)" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--ad-text)";
+                e.currentTarget.style.background = "var(--ad-hover-bg)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "var(--ad-text-faint)";
+                e.currentTarget.style.background = "transparent";
+              }}
               aria-label="Close modal"
             >
               ✕
@@ -65,11 +79,11 @@ export function Modal({ isOpen, onClose, title, children, maxWidth = "md", foote
         )}
 
         {/* Body */}
-        <div className="px-6 py-5 overflow-y-auto max-h-[70vh]">{children}</div>
+        <div className="px-6 py-5 overflow-y-auto max-h-[70vh]" style={{ color: "var(--ad-text)" }}>{children}</div>
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/8 bg-white/2">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t" style={{ borderColor: "var(--ad-border)", background: "var(--ad-card)" }}>
             {footer}
           </div>
         )}

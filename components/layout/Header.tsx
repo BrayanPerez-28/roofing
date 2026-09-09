@@ -323,7 +323,7 @@ export default function Header() {
                         <Phone size={16} />
                         {CONTACT_INFO.phoneEmergency}
                       </a>
-                      <p className="text-xs text-center text-outline mt-0.5">Emergencies – Owner Direct</p>
+                      <p className="text-xs text-center text-outline mt-0.5">Roofing Emergencies</p>
                     </div>
                   </div>
                 <Link

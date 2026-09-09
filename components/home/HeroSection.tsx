@@ -204,7 +204,7 @@ export default function HeroSection() {
         >
           {/* Overline badge */}
           <motion.div variants={itemVariants}>
-            <span className="inline-flex items-center gap-2 px-4 py-1 glass-panel rounded-full border-glass-primary">
+            <span className="inline-flex items-center gap-2 px-4 py-1 glass-panel rounded-full border-glass-primary mt-5">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-glow-pulse" />
               <span className="font-label-md text-label-md text-primary uppercase tracking-widest">
                 Perez Premium Roofing
@@ -217,9 +217,7 @@ export default function HeroSection() {
             variants={itemVariants}
             className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-gradient leading-tight"
           >
-            Premium Roofing Solutions
-            <br />
-            <span className="text-on-surface">Built to Last.</span>
+            Experience You Can Rely On.
           </motion.h1>
 
           {/* Subtext */}
@@ -227,8 +225,17 @@ export default function HeroSection() {
             variants={itemVariants}
             className="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
           >
-            Engineering structural integrity with high-end aesthetics. We blend futuristic materials
-            with masterful craftsmanship for commercial and luxury residential properties.
+            Perez Premium Roofing is a family-owned roofing company serving homeowners and businesses
+            throughout the Bay Area. Owner Joaquin Perez has worked in the roofing industry since 2000,
+            bringing more than 25 years of hands-on experience to every project.
+          </motion.p>
+
+          <motion.p
+            variants={itemVariants}
+            className="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
+          >
+            After years of working in the industry, Joaquin established Perez Premium Roofing to provide
+            customers with dependable roofing work, straightforward communication, and quality craftsmanship.
           </motion.p>
 
           {/* CTAs */}

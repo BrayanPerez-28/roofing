@@ -32,15 +32,21 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
       <aside
         className={[
           "fixed top-0 left-0 z-50 h-full w-64 flex flex-col",
-          "border-r border-white/8",
-          "transition-transform duration-300 ease-in-out",
+          "border-r transition-transform duration-300 ease-in-out",
           "lg:translate-x-0 lg:static lg:z-auto",
           isOpen ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
-        style={{ background: "rgba(10,12,20,0.95)", backdropFilter: "blur(24px)" }}
+        style={{
+          background: "var(--ad-sidebar-bg)",
+          backdropFilter: "blur(24px)",
+          borderColor: "var(--ad-border)",
+        }}
       >
-        {/* Logo — same style as site header */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-white/8">
+        {/* Logo */}
+        <div
+          className="flex items-center gap-3 px-5 py-4 border-b"
+          style={{ borderColor: "var(--ad-border)" }}
+        >
           <div
             className="px-2 py-1 rounded-lg"
             style={{ background: "rgba(255,255,255,0.74)", backdropFilter: "blur(8px)" }}
@@ -58,14 +64,23 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             />
           </div>
           <div>
-            <p className="text-sm font-bold text-[#e5e2e1] leading-none font-['Montserrat',sans-serif]">
+            <p className="text-sm font-bold leading-none font-['Montserrat',sans-serif]" style={{ color: "var(--ad-text)" }}>
               Perez Roofing
             </p>
-            <p className="text-[11px] text-[#e5e2e1]/40 mt-0.5">Admin Panel</p>
+            <p className="text-[11px] mt-0.5" style={{ color: "var(--ad-text-faint)" }}>Admin Panel</p>
           </div>
           <button
             onClick={onClose}
-            className="ml-auto lg:hidden w-7 h-7 rounded-lg flex items-center justify-center text-[#e5e2e1]/40 hover:text-[#e5e2e1] hover:bg-white/8 transition-all"
+            className="ml-auto lg:hidden w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+            style={{ color: "var(--ad-text-faint)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--ad-text)";
+              e.currentTarget.style.background = "var(--ad-hover-bg)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--ad-text-faint)";
+              e.currentTarget.style.background = "transparent";
+            }}
             aria-label="Close sidebar"
           >✕</button>
         </div>
@@ -79,28 +94,39 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 key={href}
                 href={href}
                 onClick={onClose}
-                className={[
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group border",
-                  active
-                    ? "border-[#b7c4ff]/20 text-[#b7c4ff]"
-                    : "border-transparent text-[#e5e2e1]/50 hover:text-[#e5e2e1] hover:bg-white/5",
-                ].join(" ")}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group border"
                 style={active ? {
-                  background: "linear-gradient(135deg, rgba(183,196,255,0.12) 0%, rgba(11,30,91,0.4) 100%)",
-                } : {}}
+                  background: "var(--ad-primary-muted)",
+                  borderColor: "var(--ad-primary-border)",
+                  color: "var(--ad-primary)",
+                } : {
+                  borderColor: "transparent",
+                  color: "var(--ad-text-muted)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.background = "var(--ad-hover-bg)";
+                    e.currentTarget.style.color = "var(--ad-text)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.color = "var(--ad-text-muted)";
+                  }
+                }}
                 aria-current={active ? "page" : undefined}
               >
                 <span
-                  className={[
-                    "w-8 h-8 rounded-lg flex items-center justify-center text-base transition-all",
-                    active
-                      ? "text-[#b7c4ff]"
-                      : "text-[#e5e2e1]/40 group-hover:text-[#e5e2e1]/70",
-                  ].join(" ")}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-base transition-all"
                   style={active ? {
-                    background: "rgba(183,196,255,0.15)",
-                    boxShadow: "0 0 10px rgba(183,196,255,0.2)",
-                  } : { background: "rgba(255,255,255,0.05)" }}
+                    background: "var(--ad-primary-muted)",
+                    color: "var(--ad-primary)",
+                    boxShadow: "0 0 10px var(--ad-primary-border)",
+                  } : {
+                    background: "var(--ad-hover-bg)",
+                    color: "var(--ad-text-muted)",
+                  }}
                 >
                   {icon}
                 </span>
@@ -108,7 +134,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 {active && (
                   <span
                     className="ml-auto w-1.5 h-1.5 rounded-full"
-                    style={{ background: "#b7c4ff", boxShadow: "0 0 6px rgba(183,196,255,0.8)" }}
+                    style={{ background: "var(--ad-primary)", boxShadow: "0 0 6px var(--ad-primary)" }}
                   />
                 )}
               </Link>
@@ -117,24 +143,41 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         </nav>
 
         {/* User + Logout */}
-        <div className="px-3 py-4 border-t border-white/8 space-y-1">
-          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl" style={{ background: "rgba(183,196,255,0.05)", border: "1px solid rgba(183,196,255,0.1)" }}>
+        <div className="px-3 py-4 border-t space-y-1" style={{ borderColor: "var(--ad-border)" }}>
+          <div
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl border"
+            style={{ background: "var(--ad-primary-muted)", borderColor: "var(--ad-primary-border)" }}
+          >
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-[#1b2b68] text-xs font-bold shrink-0"
-              style={{ background: "linear-gradient(135deg, #b7c4ff 0%, #dde1ff 100%)" }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
+              style={{ background: "linear-gradient(135deg, var(--ad-primary) 0%, #dde1ff 100%)", color: "var(--ad-primary-dark)" }}
             >
               {initials}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-[#e5e2e1] truncate">{user?.name || "Admin"}</p>
-              <p className="text-[11px] text-[#e5e2e1]/40 truncate">{user?.email || ""}</p>
+              <p className="text-xs font-semibold truncate" style={{ color: "var(--ad-text)" }}>{user?.name || "Admin"}</p>
+              <p className="text-[11px] truncate" style={{ color: "var(--ad-text-faint)" }}>{user?.email || ""}</p>
             </div>
           </div>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-400/70 hover:text-red-400 hover:bg-red-500/8 transition-all duration-150 border border-transparent hover:border-red-500/20"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 border border-transparent"
+            style={{ color: "var(--ad-error)", opacity: 0.75 }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.opacity = "1";
+              (e.currentTarget as HTMLButtonElement).style.background = "rgba(220,38,38,0.08)";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(220,38,38,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.opacity = "0.75";
+              (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "transparent";
+            }}
           >
-            <span className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-500/8 text-red-400 text-base">⬡</span>
+            <span
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-base"
+              style={{ background: "rgba(220,38,38,0.08)", color: "var(--ad-error)" }}
+            >⬡</span>
             Logout
           </button>
         </div>

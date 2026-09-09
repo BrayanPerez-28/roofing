@@ -64,6 +64,13 @@ export const authApi = {
 
   me: () =>
     api.get<ApiResponse>("/admin/user").then((r) => r.data),
+
+  updatePassword: (payload: {
+    current_password: string;
+    password: string;
+    password_confirmation: string;
+  }) =>
+    api.put<ApiResponse>("/admin/user/password", payload).then((r) => r.data),
 };
 
 // ─── Reviews Endpoints ──────────────────────────────────────────────────────────

@@ -41,18 +41,16 @@ export default function AboutPage() {
         <div className="max-w-3xl">
           <span className="inline-block px-4 py-1 glass-panel rounded-full border-glass-primary mb-6">
             <span className="font-label-md text-label-md text-primary uppercase tracking-widest">
-              Est. 2003 — CSLB #1135746
+              OVER 25 YEARS OF ROOFING EXPERIENCE
             </span>
           </span>
           <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-gradient mb-8">
-            Built on Integrity.<br />Trusted by the Bay Area.
+            Quality Roofing. Done Right.
           </h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-6">
-            Perez Premium Roofing INC is a company committed to providing durable, safe and
-            aesthetically impeccable roofing solutions in the Bay Area, CA. With over {BRAND.yearsExperience} years
-            of experience in the industry and backed by our state license CSLB #1135746, we
-            pride ourselves in providing high quality services to both residential and commercial
-            customers.
+            Perez Premium Roofing provides residential and commercial roofing services throughout the Bay Area.
+            With over 25 years of hands-on roofing experience, we focus on quality workmanship, reliable service,
+            and roofs built to last.
           </p>
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-8">
             Specializing in a wide range of roofing systems — including Composition Shingles,
