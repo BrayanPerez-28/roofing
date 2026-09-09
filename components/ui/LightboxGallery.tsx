@@ -21,15 +21,14 @@ import type { GalleryItem } from '@/lib/mediaAssets';
 type Category = GalleryItem['category'] | 'all';
 
 const CATEGORY_LABELS: Record<Category, string> = {
-  all:           'All Projects',
-  residential:   'Residential',
-  commercial:    'Commercial',
-  shingles:      'Shingles',
-  tile:          'Tile Roofing',
-  gutters:       'Gutters',
-  flat:          'Flat Roofs',
-  maintenance:   'Maintenance',
-  'before-after': 'Before & After',
+  all:      'All Projects',
+  shingles: 'Composition Shingles',
+  tile:     'Concrete Tile',
+  flat:     'Flat Roof PVC/TPO',
+  metal:    'Standing Seam Metal',
+  wood:     'Wood Shingles',
+  repairs:  'Roof Repairs',
+  gutters:  'Gutters & Downspouts',
 };
 
 const PAGE_SIZE = 20;
