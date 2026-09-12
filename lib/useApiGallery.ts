@@ -62,9 +62,11 @@ export function mediaUrl(filePath: string): string {
 
 export function useServiceMedia(slug: string): {
   images: string[];
+  videos: string[];
   isLoading: boolean;
 } {
-  const [images, setImages] = useState<string[]>([]);
+  const [images,    setImages]    = useState<string[]>([]);
+  const [videos,    setVideos]    = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -74,16 +76,15 @@ export function useServiceMedia(slug: string): {
     fetch(`${API_BASE}/api/public/gallery/${apiSlug}`)
       .then((r) => r.json())
       .then((data: ApiService) => {
-        const imgs = (data.media ?? [])
-          .filter((m) => m.media_type === 'image')
-          .map((m) => mediaUrl(m.file_path));
-        setImages(imgs);
+        const media = (data.media ?? []).sort((a, b) => b.id - a.id); // newest first
+        setImages(media.filter((m) => m.media_type === 'image').map((m) => mediaUrl(m.file_path)));
+        setVideos(media.filter((m) => m.media_type === 'video').map((m) => mediaUrl(m.file_path)));
       })
-      .catch(() => setImages([]))
+      .catch(() => { setImages([]); setVideos([]); })
       .finally(() => setIsLoading(false));
   }, [slug]);
 
-  return { images, isLoading };
+  return { images, videos, isLoading };
 }
 
 // ─── Hook: ALL services media (for gallery page) ──────────────────────────────
@@ -117,7 +118,8 @@ export function useAllServicesMedia(): {
           if (result.status !== 'fulfilled') return;
           const svc = result.value;
           const category = SLUG_TO_CATEGORY[svc.slug] ?? 'shingles';
-          (svc.media ?? []).forEach((m) => {
+          const media = (svc.media ?? []).sort((a, b) => b.id - a.id); // newest first
+          media.forEach((m) => {
             if (m.media_type === 'image') {
               items.push({
                 src: mediaUrl(m.file_path),

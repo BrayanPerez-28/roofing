@@ -26,6 +26,16 @@ export default function Page() {
         { value: BRAND.yearsExperience, suffix: '+', label: 'Years Experience' },
       ]}
       benefits={data.benefits}
+      includedServices={[
+        'Complete evaluation and inspection of the roof',
+        'Advice on the choice of the right type of wood and style',
+        'Removal of previous material, if applicable',
+        'Preparation of the roof surface and structure',
+        'Accurate and professional installation of wood shingles',
+        'Moisture and insect protection treatments, as needed',
+        'Subsequent cleanup and proper disposal of old materials',
+        'Warranty on workmanship and materials'
+      ]}
     />
   );
 }

@@ -217,7 +217,7 @@ export default function HeroSection() {
             variants={itemVariants}
             className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-gradient leading-tight"
           >
-            Experience You Can Rely On.
+            Quality Roofing. Done Right.
           </motion.h1>
 
           {/* Subtext */}

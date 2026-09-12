@@ -17,7 +17,7 @@ export default function Page() {
     <ServiceDetailPage
       title={data.label}
       subtitle="Premium Metal Roofing Systems"
-      description={data.description}
+      description="PEREZ PREMIUM ROOFING INC's Standing Seam Metal Roofs service consists of the installation of metal roofs composed of highly durable vertical panels, whose raised edges (seams) are sealed by means of mechanical hooking or concealed fastening systems. This type of roofing not only provides excellent protection against the elements, but also offers a sophisticated and clean style. Our team performs the structural evaluation of the roof, prepares the surface and executes the installation with precision, using premium materials."
       icon={data.icon}
       slug={data.slug}
       badge="Premium System"
@@ -27,6 +27,14 @@ export default function Page() {
         { value: 100, suffix: '%', label: 'Recyclable Material' },
       ]}
       benefits={data.benefits}
+      includedServices={[
+        'Complete evaluation of the roof structure',
+        'Advice on selection of materials, finishes and colors',
+        'Preparation of the roof for structural support of the metal',
+        'Installation of metal panels with concealed fastening and professional sealing',
+        'Integration with ventilation systems and gutters, if required',
+        'Quality guarantee in materials and workmanship',
+      ]}
     />
   );
 }

@@ -45,7 +45,7 @@ export default function AboutPage() {
             </span>
           </span>
           <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-gradient mb-8">
-            Quality Roofing. Done Right.
+            Experience You Can Rely On.
           </h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-6">
             Perez Premium Roofing provides residential and commercial roofing services throughout the Bay Area.

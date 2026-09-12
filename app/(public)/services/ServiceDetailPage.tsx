@@ -6,12 +6,14 @@
  * Shared template for all service sub-pages.
  * Enhanced with:
  * - Video hero banner (service-specific)
- * - Auto-playing image carousel of real project photos
+ * - Responsive masonry mosaic gallery of admin-uploaded photos
+ * - Lightbox (fullscreen preview with keyboard nav)
  * - Benefit cards from real service data
  * - Scroll-triggered entrance animations
  */
 
-import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import Button from '@/components/ui/Button';
@@ -43,6 +45,7 @@ interface ServiceDetailPageProps {
   stats: StatItem[];
   badge?: string;
   benefits?: BenefitItem[];
+  includedServices?: string[];
   videoSrc?: string;
 }
 
@@ -57,6 +60,265 @@ const SERVICE_VIDEOS: Record<string, string> = {
   'roof-repairs':         VIDEOS.maintenance,
 };
 
+// ─── Masonry Mosaic Gallery ────────────────────────────────────────────────────
+
+const INITIAL_VISIBLE = 6;
+const LOAD_MORE_STEP  = 6;
+
+function MosaicGallery({ images, title }: { images: string[]; title: string }) {
+  const [lightboxIdx,   setLightboxIdx]   = useState<number | null>(null);
+  const [visibleCount,  setVisibleCount]  = useState(INITIAL_VISIBLE);
+
+  const visibleImages  = images.slice(0, visibleCount);
+  const hasMore        = visibleCount < images.length;
+  const isExpanded     = visibleCount > INITIAL_VISIBLE;
+
+  const close = useCallback(() => setLightboxIdx(null), []);
+  const prev  = useCallback(() => setLightboxIdx((i) => i !== null ? (i - 1 + images.length) % images.length : null), [images.length]);
+  const next  = useCallback(() => setLightboxIdx((i) => i !== null ? (i + 1) % images.length : null), [images.length]);
+
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape')       close();
+      else if (e.key === 'ArrowLeft')   prev();
+      else if (e.key === 'ArrowRight')  next();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [lightboxIdx, close, prev, next]);
+
+  useEffect(() => {
+    document.body.style.overflow = lightboxIdx !== null ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [lightboxIdx]);
+
+  return (
+    <>
+      {/* ── Masonry grid ── */}
+      <div
+        style={{ columnGap: '12px' }}
+        className="[column-count:1] sm:[column-count:2] lg:[column-count:3]"
+      >
+        {visibleImages.map((src, idx) => (
+          <motion.div
+            key={src + idx}
+            className="break-inside-avoid mb-3 overflow-hidden rounded-xl cursor-zoom-in group relative"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.45, delay: (idx % 6) * 0.06 }}
+            onClick={() => setLightboxIdx(idx)}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={src}
+              alt={`${title} project photo ${idx + 1}`}
+              className="w-full h-auto block object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center rounded-xl">
+              <span className="text-white text-3xl opacity-0 group-hover:opacity-100 transition-all duration-300 drop-shadow-lg">
+                🔍
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* ── Load More / Show Less ── */}
+      {images.length > INITIAL_VISIBLE && (
+        <div className="flex flex-col items-center gap-3 mt-6">
+          <p className="text-sm text-on-surface-variant/60">
+            Showing <span className="font-semibold text-on-surface">{visibleImages.length}</span> of{' '}
+            <span className="font-semibold text-on-surface">{images.length}</span> photos
+          </p>
+          <div className="flex gap-3 flex-wrap justify-center">
+            {hasMore && (
+              <button
+                onClick={() => setVisibleCount((c) => Math.min(c + LOAD_MORE_STEP, images.length))}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-primary/30 text-primary font-medium text-sm hover:bg-primary/10 transition-all duration-300 hover:border-primary/60"
+              >
+                <span>Load More Photos</span>
+                <span className="text-xs opacity-60">({Math.min(LOAD_MORE_STEP, images.length - visibleCount)} more)</span>
+                <span>↓</span>
+              </button>
+            )}
+            {!hasMore && (
+              <button
+                onClick={() => setVisibleCount((c) => Math.min(c + LOAD_MORE_STEP, images.length))}
+                disabled
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-outline-variant/30 text-on-surface-variant/40 font-medium text-sm cursor-default"
+              >
+                All photos loaded ✓
+              </button>
+            )}
+            {isExpanded && (
+              <button
+                onClick={() => setVisibleCount(INITIAL_VISIBLE)}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-outline-variant/40 text-on-surface-variant font-medium text-sm hover:bg-surface-variant/20 transition-all duration-300"
+              >
+                Show Less ↑
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightboxIdx !== null && (
+          <motion.div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={close}
+          >
+            {/* Close */}
+            <button
+              onClick={close}
+              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white text-xl flex items-center justify-center transition-all z-10"
+              aria-label="Close"
+            >✕</button>
+
+            {/* Prev */}
+            {images.length > 1 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); prev(); }}
+                className="absolute left-3 sm:left-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white text-xl flex items-center justify-center transition-all z-10"
+                aria-label="Previous photo"
+              >‹</button>
+            )}
+
+            {/* Image */}
+            <motion.img
+              key={lightboxIdx}
+              src={images[lightboxIdx]}
+              alt={`${title} project photo ${lightboxIdx + 1}`}
+              className="max-w-full max-h-[88vh] object-contain rounded-lg shadow-2xl"
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {/* Next */}
+            {images.length > 1 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); next(); }}
+                className="absolute right-3 sm:right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white text-xl flex items-center justify-center transition-all z-10"
+                aria-label="Next photo"
+              >›</button>
+            )}
+
+            {/* Counter */}
+            <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+              {lightboxIdx + 1} / {images.length}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ─── Video Grid ────────────────────────────────────────────────────────────────
+
+const INITIAL_VIDEOS = 3;
+const LOAD_MORE_VIDEOS = 3;
+
+function VideoGrid({ videos, title }: { videos: string[]; title: string }) {
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VIDEOS);
+  const [playing,      setPlaying]      = useState<number | null>(null);
+
+  const visibleVideos = videos.slice(0, visibleCount);
+  const hasMore       = visibleCount < videos.length;
+  const isExpanded    = visibleCount > INITIAL_VIDEOS;
+
+  return (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {visibleVideos.map((src, idx) => (
+          <motion.div
+            key={src + idx}
+            className="relative rounded-xl overflow-hidden bg-black/20 group"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.45, delay: (idx % 3) * 0.08 }}
+          >
+            <video
+              src={src}
+              className="w-full h-auto max-h-64 object-cover block"
+              controls={playing === idx}
+              playsInline
+              preload="metadata"
+              onPlay={() => setPlaying(idx)}
+              onPause={() => setPlaying(null)}
+              onEnded={() => setPlaying(null)}
+              aria-label={`${title} project video ${idx + 1}`}
+            />
+            {/* Play overlay — disappears when playing */}
+            {playing !== idx && (
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-all duration-300 cursor-pointer"
+                onClick={() => {
+                  const el = document.querySelectorAll('video')[idx] as HTMLVideoElement;
+                  if (el) { el.play(); setPlaying(idx); }
+                }}
+              >
+                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-white text-2xl ml-1">▶</span>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* ── Load More / Show Less ── */}
+      {videos.length > INITIAL_VIDEOS && (
+        <div className="flex flex-col items-center gap-3 mt-6">
+          <p className="text-sm text-on-surface-variant/60">
+            Showing <span className="font-semibold text-on-surface">{visibleVideos.length}</span> of{' '}
+            <span className="font-semibold text-on-surface">{videos.length}</span> videos
+          </p>
+          <div className="flex gap-3 flex-wrap justify-center">
+            {hasMore && (
+              <button
+                onClick={() => setVisibleCount((c) => Math.min(c + LOAD_MORE_VIDEOS, videos.length))}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-primary/30 text-primary font-medium text-sm hover:bg-primary/10 transition-all duration-300 hover:border-primary/60"
+              >
+                <span>Load More Videos</span>
+                <span className="text-xs opacity-60">({Math.min(LOAD_MORE_VIDEOS, videos.length - visibleCount)} more)</span>
+                <span>↓</span>
+              </button>
+            )}
+            {!hasMore && (
+              <span className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-outline-variant/30 text-on-surface-variant/40 font-medium text-sm">
+                All videos loaded ✓
+              </span>
+            )}
+            {isExpanded && (
+              <button
+                onClick={() => { setVisibleCount(INITIAL_VIDEOS); setPlaying(null); }}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-outline-variant/40 text-on-surface-variant font-medium text-sm hover:bg-surface-variant/20 transition-all duration-300"
+              >
+                Show Less ↑
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// ─── Main component ────────────────────────────────────────────────────────────
+
 export default function ServiceDetailPage({
   title,
   subtitle,
@@ -66,21 +328,20 @@ export default function ServiceDetailPage({
   stats,
   badge,
   benefits,
+  includedServices,
   videoSrc,
 }: ServiceDetailPageProps) {
-  // API images (uploaded via admin) take priority over local fallbacks
-  const { images: apiImages } = useServiceMedia(slug);
+  // API media (images + videos) uploaded via admin
+  const { images: apiImages, videos: apiVideos } = useServiceMedia(slug);
 
   const localImages = (SERVICE_IMAGES[slug] || []).map((src) => ({ src, alt: `${title} project photo` }));
-  const apiCarouselImages = apiImages.map((src) => ({ src, alt: `${title} project photo` }));
 
-  // Carousel: API images first, then local fallbacks (deduplicated)
-  const carouselImages = apiCarouselImages.length > 0
-    ? apiCarouselImages
-    : localImages;
+  // If API has images → show mosaic. Otherwise fall back to carousel with local images
+  const showMosaic   = apiImages.length > 0;
+  const carouselImages = localImages;
 
   const heroVideo = videoSrc || SERVICE_VIDEOS[slug] || VIDEOS.hero;
-  const fallbackImage = carouselImages[0]?.src;
+  const fallbackImage = apiImages[0] || localImages[0]?.src;
 
   return (
     <>
@@ -155,8 +416,51 @@ export default function ServiceDetailPage({
         </div>
       </VideoBackground>
 
-      {/* ── Image Carousel ── */}
-      {carouselImages.length > 0 && (
+      {/* ── Mosaic Gallery (API images) ── */}
+      {showMosaic && (
+        <section
+          className="section-padding max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop"
+          aria-label={`${title} project photos`}
+        >
+          <div className="text-center mb-8">
+            <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-3">
+              Our Work
+            </span>
+            <h2 className="font-headline-md text-on-surface font-bold">
+              {title} Projects
+            </h2>
+            <p className="font-body-md text-body-md text-on-surface-variant mt-2">
+              {apiImages.length} completed project{apiImages.length !== 1 ? 's' : ''} — click any photo to view full size
+            </p>
+          </div>
+          <MosaicGallery images={apiImages} title={title} />
+        </section>
+      )}
+
+      {/* ── Video Gallery (API-uploaded videos) ── */}
+      {apiVideos.length > 0 && (
+        <section
+          className="section-padding max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop"
+          aria-label={`${title} project videos`}
+        >
+          <div className="text-center mb-8">
+            <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-3">
+              Project Videos
+            </span>
+            <h2 className="font-headline-md text-on-surface font-bold">
+              {title} — Video Gallery
+            </h2>
+            <p className="font-body-md text-body-md text-on-surface-variant mt-2">
+              {apiVideos.length} video{apiVideos.length !== 1 ? 's' : ''} from our completed projects
+            </p>
+          </div>
+          <VideoGrid videos={apiVideos} title={title} />
+        </section>
+      )}
+
+
+      {/* ── Carousel fallback (only when no API images) ── */}
+      {!showMosaic && carouselImages.length > 0 && (
         <section className="section-padding max-w-container-max mx-auto" aria-label={`${title} project photos`}>
           <div className="text-center mb-8">
             <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-3">
@@ -173,48 +477,6 @@ export default function ServiceDetailPage({
             transition="slide"
             rounded
           />
-        </section>
-      )}
-
-      {/* ── API Photo Grid (only when there are API-uploaded photos) ── */}
-      {apiImages.length > 1 && (
-        <section className="section-padding max-w-container-max mx-auto" aria-label={`${title} gallery`}>
-          <div className="text-center mb-8">
-            <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-3">
-              Project Gallery
-            </span>
-            <h2 className="font-headline-md text-on-surface font-bold">
-              {title} — All Photos
-            </h2>
-            <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-              {apiImages.length} photos from our completed {title.toLowerCase()} projects
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {apiImages.map((src, idx) => (
-              <motion.div
-                key={src}
-                className="relative aspect-square overflow-hidden rounded-xl cursor-zoom-in group"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: (idx % 8) * 0.05 }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src}
-                  alt={`${title} project photo ${idx + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/20 transition-all duration-300 flex items-center justify-center">
-                  <span className="text-white opacity-0 group-hover:opacity-100 transition-all duration-300 text-2xl drop-shadow-lg">
-                    🔍
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </section>
       )}
 
@@ -262,6 +524,29 @@ export default function ServiceDetailPage({
               </motion.div>
             ))}
           </div>
+        </section>
+      )}
+
+      {includedServices && includedServices.length > 0 && (
+        <section className="section-padding max-w-container-max mx-auto" aria-labelledby="service-includes-heading">
+          <div className="text-center">
+            <SectionHeader
+              overline="Included With Your Project"
+              headline="What does the service include?"
+              centered
+            />
+            <p id="service-includes-heading" className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto mt-6 mb-8 leading-relaxed">
+              When contracting the {title} service with Perez Premium Roofing INC, the client receives:
+            </p>
+          </div>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            {includedServices.map((item) => (
+              <li key={item} className="glass-card p-5 rounded-xl flex items-start gap-3 text-left font-body-md text-body-md text-on-surface">
+                <span className="material-symbols-outlined text-primary shrink-0" aria-hidden="true">check_circle</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
@@ -319,3 +604,4 @@ export default function ServiceDetailPage({
     </>
   );
 }
+

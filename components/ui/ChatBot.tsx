@@ -108,6 +108,25 @@ const SUGGESTIONS = [
   'Do you do free estimates?',
 ];
 
+const ROOFING_TOPIC_TERMS = [
+  'roof', 'roofing', 'shingle', 'tile', 'metal', 'gutter', 'downspout',
+  'repair', 'leak', 'storm', 'damage', 'install', 'installation',
+  'maintenance', 'inspection', 'waterproof', 'pvc', 'tpo', 'wood',
+  'estimate', 'quote', 'cost', 'price', 'warranty', 'material',
+  'techo', 'techos', 'tejado', 'teja', 'canaleta', 'reparacion',
+  'reparación', 'filtracion', 'filtración', 'instalacion', 'instalación',
+  'mantenimiento', 'cotizacion', 'cotización', 'presupuesto', 'garantia',
+  'garantía', 'servicio', 'empresa', 'contacto', 'bay area',
+];
+
+const OUT_OF_SCOPE_REPLY =
+  "I can only help with Perez Premium Roofing services, roof repairs, installations, materials, maintenance, coverage areas, and free estimates. Please ask me a roofing-related question or contact our team for assistance.";
+
+function isRoofingQuestion(message: string) {
+  const normalizedMessage = message.toLowerCase();
+  return ROOFING_TOPIC_TERMS.some((term) => normalizedMessage.includes(term));
+}
+
 // ─── Main ChatBot Component ───────────────────────────────────────────────────
 
 export default function ChatBot() {
@@ -164,6 +183,18 @@ export default function ChatBot() {
       setIsLoading(true);
 
       try {
+        if (!isRoofingQuestion(trimmed)) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `assistant-${Date.now()}`,
+              role: 'assistant',
+              content: OUT_OF_SCOPE_REPLY,
+            },
+          ]);
+          return;
+        }
+
         const data = await sendChatMessage(trimmed);
         const assistantMsg: Message = {
           id: `assistant-${Date.now()}`,
