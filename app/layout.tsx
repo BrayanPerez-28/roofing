@@ -9,7 +9,7 @@ import { Inter, Montserrat } from 'next/font/google';
 const inter = Inter({ 
   subsets: ['latin'], 
   display: 'swap',
-  variable: '--font-inter' // Nos permite usarla en Tailwind o CSS si es necesario
+  variable: '--font-inter' 
 });
 
 const montserrat = Montserrat({ 

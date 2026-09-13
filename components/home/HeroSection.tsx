@@ -225,17 +225,21 @@ export default function HeroSection() {
             variants={itemVariants}
             className="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
           >
-            Perez Premium Roofing is a family-owned roofing company serving homeowners and businesses
-            throughout the Bay Area. Owner Joaquin Perez has worked in the roofing industry since 2000,
-            bringing more than 25 years of hands-on experience to every project.
+            Perez Premium Roofing provides residential and commercial roofing services throughout the Bay Area.
+            With over 25 years of hands-on roofing experience, we focus on quality workmanship, reliable service,
+            and roofs built to last.
           </motion.p>
 
           <motion.p
             variants={itemVariants}
             className="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
           >
-            After years of working in the industry, Joaquin established Perez Premium Roofing to provide
-            customers with dependable roofing work, straightforward communication, and quality craftsmanship.
+            Specializing in a wide range of roofing systems — including Composition Shingles,
+            Wood Shingles, Concrete Tile Roofing, Flat Roof PVC and TPO, and Standing Seam
+            Metal Roofs — we also offer installation and maintenance of Gutters &amp; Downspouts
+            and complete Roof Repair services. Every project is approached with precision,
+            premium materials and attention to detail, ensuring long-term satisfaction and
+            protection for your property.
           </motion.p>
 
           {/* CTAs */}
