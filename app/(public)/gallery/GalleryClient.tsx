@@ -108,13 +108,14 @@ function getSize(index: number) {
 /** Inject the 3 project videos at visual positions within the filtered list */
 function buildMosaicList(images: GalleryItem[]): MosaicItem[] {
   const list: MosaicItem[] = [...images];
-  const insertions: Array<[number, VideoGalleryItem]> = [
+  const insertions: Array<[number, VideoGalleryItem | undefined]> = [
     [5,  VIDEO_ITEMS[0]],
     [20, VIDEO_ITEMS[1]],
     [48, VIDEO_ITEMS[2]],
   ];
   let offset = 0;
   for (const [pos, v] of insertions) {
+    if (!v) continue; // skip if VIDEO_ITEMS doesn't have this index
     const idx = pos + offset;
     if (list.length > idx) {
       list.splice(idx, 0, v);
@@ -535,7 +536,7 @@ export default function GalleryClient() {
   const [visible,       setVisible]       = useState(PAGE_SIZE);
 
   // Fetch API-uploaded photos and prepend them to the static gallery
-  const { galleryItems: apiItems } = useAllServicesMedia();
+  const { galleryItems: apiItems, isLoading: apiLoading } = useAllServicesMedia();
 
   // Merge: API items first (most recent), then local items not already in API
   const allItems = useMemo(() => {
@@ -700,6 +701,28 @@ export default function GalleryClient() {
         className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-12"
         aria-label="Project gallery"
       >
+      {/* ── API loading skeleton ── */}
+        {apiLoading && (
+          <div
+            className="gallery-mosaic max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-12"
+            aria-busy="true"
+            aria-label="Loading gallery"
+          >
+            {[
+              'col-span-2 row-span-1', 'col-span-1 row-span-2', 'col-span-1 row-span-1',
+              'col-span-1 row-span-1', 'col-span-1 row-span-1', 'col-span-2 row-span-1',
+              'col-span-1 row-span-2', 'col-span-1 row-span-1', 'col-span-1 row-span-1',
+              'col-span-2 row-span-1', 'col-span-1 row-span-1', 'col-span-1 row-span-1',
+            ].map((cls, i) => (
+              <div
+                key={i}
+                className={`gallery-mosaic-cell ${cls} rounded-[1.75rem] bg-white/[0.06] animate-pulse`}
+                style={{ animationDelay: `${i * 0.05}s` }}
+              />
+            ))}
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           <motion.div
             key={`${category}-${mediaType}`}
@@ -709,19 +732,56 @@ export default function GalleryClient() {
             transition={{ duration: 0.25 }}
             className="gallery-mosaic"
           >
-            {shownItems.map((item, i) => (
-              <MosaicCell
-                key={`${item.src ?? (item as any).src}-${i}`}
-                item={item}
-                gridIndex={i}
-                onOpen={setLightboxIndex}
-              />
-            ))}
+            {mediaType === 'videos' ? (
+              /* ── Dedicated video grid — bypasses MosaicCell to avoid onError→null hiding ── */
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {shownItems.map((item, i) => {
+                  const v = item as VideoGalleryItem;
+                  return (
+                    <div
+                      key={v.src + i}
+                      className="relative rounded-2xl overflow-hidden bg-black group cursor-pointer"
+                      style={{ minHeight: 260 }}
+                      onClick={() => setLightboxIndex(i)}
+                    >
+                      <video
+                        src={v.src}
+                        poster={v.poster}
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover absolute inset-0"
+                        onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
+                        onMouseLeave={(e) => { const el = e.currentTarget as HTMLVideoElement; el.pause(); el.currentTime = 0; }}
+                      />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300 flex items-end p-4">
+                        <span className="text-white/80 text-sm font-medium drop-shadow">{v.alt}</span>
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
+                          <span className="text-white text-3xl ml-1">▶</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              shownItems.map((item, i) => (
+                <MosaicCell
+                  key={`${item.src ?? (item as any).src}-${i}`}
+                  item={item}
+                  gridIndex={i}
+                  onOpen={setLightboxIndex}
+                />
+              ))
+            )}
           </motion.div>
         </AnimatePresence>
 
         {/* Empty state */}
-        {filteredImages.length === 0 && (
+        {mosaicItems.length === 0 && (
           <div className="text-center py-24 text-on-surface-variant">
             <span className="material-symbols-outlined text-5xl opacity-30 block mb-4">image_not_supported</span>
             <p>No projects found in this category.</p>

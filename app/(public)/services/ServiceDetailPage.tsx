@@ -332,12 +332,13 @@ export default function ServiceDetailPage({
   videoSrc,
 }: ServiceDetailPageProps) {
   // API media (images + videos) uploaded via admin
-  const { images: apiImages, videos: apiVideos } = useServiceMedia(slug);
+  const { images: apiImages, videos: apiVideos, isLoading: mediaLoading } = useServiceMedia(slug);
 
   const localImages = (SERVICE_IMAGES[slug] || []).map((src) => ({ src, alt: `${title} project photo` }));
 
-  // If API has images → show mosaic. Otherwise fall back to carousel with local images
-  const showMosaic   = apiImages.length > 0;
+  // After loading: show mosaic if API has images, otherwise carousel fallback
+  const showMosaic     = !mediaLoading && apiImages.length > 0;
+  const showCarousel   = !mediaLoading && apiImages.length === 0 && localImages.length > 0;
   const carouselImages = localImages;
 
   const heroVideo = videoSrc || SERVICE_VIDEOS[slug] || VIDEOS.hero;
@@ -417,6 +418,31 @@ export default function ServiceDetailPage({
       </VideoBackground>
 
       {/* ── Mosaic Gallery (API images) ── */}
+      {/* ── Skeleton: shown while API media is loading ── */}
+      {mediaLoading && (
+        <section
+          className="section-padding max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop"
+          aria-label="Loading project photos"
+          aria-busy="true"
+        >
+          <div className="text-center mb-8">
+            <div className="h-4 w-20 bg-white/10 rounded-full mx-auto mb-3 animate-pulse" />
+            <div className="h-7 w-48 bg-white/8 rounded-lg mx-auto mb-2 animate-pulse" />
+            <div className="h-4 w-32 bg-white/6 rounded mx-auto animate-pulse" />
+          </div>
+          <div className="[column-count:1] sm:[column-count:2] lg:[column-count:3]" style={{ columnGap: '12px' }}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="break-inside-avoid mb-3 rounded-xl bg-white/5 animate-pulse"
+                style={{ height: i % 3 === 0 ? 260 : i % 3 === 1 ? 180 : 220 }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Mosaic: API photos loaded ── */}
       {showMosaic && (
         <section
           className="section-padding max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop"
@@ -459,8 +485,8 @@ export default function ServiceDetailPage({
       )}
 
 
-      {/* ── Carousel fallback (only when no API images) ── */}
-      {!showMosaic && carouselImages.length > 0 && (
+      {/* ── Carousel fallback (only when API is done loading and has no images) ── */}
+      {showCarousel && (
         <section className="section-padding max-w-container-max mx-auto" aria-label={`${title} project photos`}>
           <div className="text-center mb-8">
             <span className="font-label-md text-label-md text-primary uppercase tracking-widest block mb-3">

@@ -30,28 +30,28 @@ const items = [
   {
     id: 1,
     colSpan: 'md:col-span-2',
-    icon: 'architecture',
-    title: 'Aerospace-Grade Materials',
+    icon: 'search',
+    title: 'On-Site Evaluation',
     description:
-      'We utilize advanced composites and coatings originally developed for extreme environments, ensuring unmatched durability and performance under any condition.',
+      'We evaluate the existing roof and discuss the recommended scope of work before the project begins.',
     large: true,
     delay: 0,
   },
   {
     id: 2,
     colSpan: '',
-    icon: 'precision_manufacturing',
-    title: 'Micro-Tolerance Engineering',
-    description: 'Every installation is mapped and executed with laser precision.',
+    icon: 'gavel',
+    title: 'Permitting Assistance',
+    description: 'If a permit is required for your roofing project, our team can assist with the application and permitting process.',
     large: false,
     delay: 0.1,
   },
   {
     id: 3,
     colSpan: '',
-    icon: 'verified_user',
-    title: 'Lifetime Warranty',
-    description: 'Backed by comprehensive guarantees that reflect our confidence in every project.',
+    icon: 'delete_sweep',
+    title: 'Job Site Cleanup',
+    description: 'Removal and disposal of roofing debris is included as part of our roof replacement projects.',
     large: false,
     delay: 0.2,
   },
@@ -75,10 +75,10 @@ export default function BentoGrid() {
           id="bento-heading"
           className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4"
         >
-          Architectural Precision
+          What's Included With Every Project
         </h2>
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
-          Elevating industry standards through advanced materials and rigorous engineering protocols.
+          From the initial evaluation to final cleanup, we handle every step of the process with professionalism and care.
         </p>
       </motion.div>
 
@@ -152,21 +152,21 @@ export default function BentoGrid() {
               style={{ fontSize: '40px' }}
               aria-hidden="true"
             >
-              solar_power
+              verified_user
             </span>
             <h3 className="font-headline-md text-headline-md text-on-surface mb-2">
-              Smart Roof Integration
+              Workmanship Warranty
             </h3>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              Seamlessly incorporating solar technology and IoT sensors without compromising
-              structural aesthetics or weather integrity.
+              Our completed roofing work is backed by a PPR workmanship warranty, with manufacturer
+              warranties available based on the roofing material selected.
             </p>
           </div>
 
           <Link
-            href="/services"
+            href="/contact"
             className="relative z-10 btn-secondary rounded-full p-4 shrink-0 group/btn"
-            aria-label="Explore Smart Roof Integration services"
+            aria-label="Learn about our workmanship warranty"
           >
             <ArrowRight
               size={20}

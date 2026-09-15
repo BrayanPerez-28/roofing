@@ -195,8 +195,6 @@ export const SERVICE_IMAGES: Record<string, string[]> = {
     img(CS, 'roof.jpeg'),
     img(CS, 'roof2.jpeg'),
     img(CS, 'roof3.jpeg'),
-    img(CS, 'roof4.jpeg'),
-    img(CS, 'roof6 (1).jpeg'),
     img(CS, 'roof6 (2).jpeg'),
     img(CS, 'roof7.jpeg'),
     img(CS, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.31_19c5ea0a.jpg'),

@@ -140,6 +140,38 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               </Link>
             );
           })}
+
+          {/* ── External tools ── */}
+          <div className="pt-3 mt-3 border-t" style={{ borderColor: "var(--ad-border)" }}>
+            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest" style={{ color: "var(--ad-text-faint)" }}>
+              API Server
+            </p>
+            <a
+              href="http://192.168.56.1:3000/services"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 border border-transparent"
+              style={{ color: "var(--ad-text-muted)" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "var(--ad-hover-bg)";
+                e.currentTarget.style.color = "var(--ad-text)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "var(--ad-text-muted)";
+              }}
+            >
+              <span
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-base"
+                style={{ background: "var(--ad-hover-bg)", color: "var(--ad-text-muted)" }}
+              >
+                🔧
+              </span>
+              <span className="flex-1">Services API</span>
+              <span className="text-xs opacity-50">↗</span>
+            </a>
+          </div>
         </nav>
 
         {/* User + Logout */}

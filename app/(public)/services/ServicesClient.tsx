@@ -16,16 +16,16 @@ import { Calendar } from 'lucide-react';
 
 const categories = [
   {
-    title: 'Residential Systems',
+    title: 'Residential Roofing',
     description:
-      'Elevating private estates with precision-engineered materials and advanced weather-proofing technology.',
+      'We specialize in composition shingles, concrete tile, wood shingles, and metal roofs for homes across the Bay Area. Quality materials, clean installs, guaranteed workmanship.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDcjYRUTIKcAxvKgQzT13jlm5rCKkHgIh-w8tZztDW4RnsWsGmzI5QTbkaPFLVCeo5ZXnv4dKt4YK5jwxkz1HPZuk9F0piYlrq6wQknK-A-PcVbkOFHjmoFPIl5O_AkE1Bu9-brpB0dKbQ67RHd12F_hworSbNBCGrqN8eH4pHHDcGpbW_vXn3e9-GdwKV9K5snXdMvYbd_Y7YjKewMumG5ua5E_kn3w-gAh_x5J78nH7QxTMXxwWA3QA',
     href: '/services',
   },
   {
-    title: 'Commercial Infrastructure',
+    title: 'Commercial Roofing',
     description:
-      'Scalable, hyper-durable roofing solutions designed for enterprise facilities and high-load architectural structures.',
+      'Flat roof systems (PVC & TPO), standing seam metal, and large-scale replacements for commercial properties. Built to last, installed on schedule.',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDy51xMYEHoJSdEgqa-wqIrqrxUEZoimY2wAIDWlx9poZEPGcn92ZwkzXm5DK2TMEYIH1RfBDNrhyVyzDFdrfVj7SObd0aBQHSs1mgHrag2jmOEx-gy9E-wzFXG8k0nK1SmvX6jjCU0hS82us66po2Igm_7ddS5Hnpz3pY-tms5C4yDCcGVQI_viHhQaaRbtaYuuMWStG_nKKjo7zJiRxdD-xVlfCETKl5oF0DoJ37QIAwFOl3P4Od1Mw',
     href: '/services',
   },
@@ -34,29 +34,29 @@ const categories = [
 const detailServices = [
   {
     icon: 'build',
-    title: 'Precision Repair',
-    description: 'Targeted diagnostics and structural restoration using aerospace-grade sealants and materials.',
+    title: 'Roof Repairs',
+    description: 'From minor leaks to storm damage, we diagnose and restore your roof quickly using quality materials and proven techniques.',
     delay: 0,
   },
   {
-    icon: 'engineering',
-    title: 'Full Replacement',
-    description: 'Complete structural overhaul deploying next-generation membranes and high-efficiency thermal barriers.',
+    icon: 'layers',
+    title: 'Roof Replacement',
+    description: 'Full replacements using composition shingles, concrete tile, metal, flat membrane, or wood — installed by experienced crews.',
     delay: 0.1,
   },
   {
-    icon: 'analytics',
-    title: 'Proactive Maintenance',
-    description: 'Data-driven inspection regimes utilizing drone telemetry and thermal imaging to preempt structural failure.',
+    icon: 'water_drop',
+    title: 'Gutters & Downspouts',
+    description: 'Proper drainage protects your home’s foundation and siding. We install, repair, and clean gutter systems for long-term performance.',
     delay: 0.2,
   },
 ];
 
 const timelinePhases = [
-  { phase: '01', title: 'Assessment', description: 'Structural Assessment & Telemetry Gathering' },
-  { phase: '02', title: 'Blueprint',  description: 'Engineering Blueprint & Material Selection' },
-  { phase: '03', title: 'Deployment', description: 'Precision Installation & Quality Control' },
-  { phase: '04', title: 'Handover',   description: 'Final Inspection, Warranty & Ongoing Support' },
+  { phase: '01', title: 'Inspection',   description: 'Free On-Site Roof Evaluation & Scope Review' },
+  { phase: '02', title: 'Proposal',     description: 'Detailed Estimate & Material Selection' },
+  { phase: '03', title: 'Installation', description: 'Licensed Crew Installation & Ongoing Updates' },
+  { phase: '04', title: 'Completion',   description: 'Final Walkthrough, Cleanup & Warranty Delivery' },
 ];
 
 export default function ServicesClient() {
@@ -67,8 +67,8 @@ export default function ServicesClient() {
         <div className="absolute inset-0 radial-glow-primary -z-10 pointer-events-none" aria-hidden="true" />
         <SectionHeader
           overline="Full Service Portfolio"
-          headline="Architectural Precision Services"
-          subtext="Next-generation roofing solutions engineered for durability, aesthetic supremacy, and technological integration."
+          headline="Professional Roofing Services"
+          subtext="Quality roofing solutions for homeowners and businesses throughout the Bay Area. Licensed, bonded & insured — CSLB #1135746."
           gradient
           centered
         />
@@ -109,8 +109,8 @@ export default function ServicesClient() {
       <section className="section-padding max-w-container-max mx-auto" aria-labelledby="categories-heading">
         <SectionHeader
           overline="Our Expertise"
-          headline="Built for Every Scale"
-          subtext="From single-family homes to industrial complexes — every project receives the same uncompromising precision."
+          headline="Residential & Commercial Roofing"
+          subtext="From single-family homes to commercial buildings — every project receives the same quality workmanship and attention to detail."
           centered
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
@@ -147,6 +147,7 @@ export default function ServicesClient() {
         <SectionHeader
           overline="What We Do"
           headline="Our Core Services"
+          subtext="The services our clients rely on most — delivered with care, experience, and a commitment to quality."
           centered
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
@@ -230,7 +231,7 @@ export default function ServicesClient() {
       <ReviewsSection />
 
       {/* ── Floating Schedule CTA ── */}
-      <div className="fixed bottom-8 right-8 z-40">
+      <div className="fixed bottom-8 left-8 z-40">
         <Button variant="primary" href="/contact" size="lg" id="floating-schedule-cta">
           <Calendar size={18} />
           Schedule Inspection

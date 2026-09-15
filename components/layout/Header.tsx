@@ -101,10 +101,31 @@ export default function Header() {
                     onMouseEnter={() => setServicesHover(true)}
                     onMouseLeave={() => setServicesHover(false)}
                   >
-                    <button className={`nav-blob-btn${isActive(link.href) ? ' blob-active' : ''}`}>
+                    {/* ── Trigger button ── */}
+                    <button
+                      id="services-menu-btn"
+                      aria-haspopup="menu"
+                      aria-expanded={servicesHover}
+                      aria-controls="services-menu"
+                      className={`nav-blob-btn${isActive(link.href) ? ' blob-active' : ''}`}
+                      onClick={() => setServicesHover((v) => !v)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Escape') { setServicesHover(false); }
+                        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setServicesHover(true);
+                          // move focus to first menu item after paint
+                          setTimeout(() => {
+                            const first = document.querySelector<HTMLAnchorElement>('#services-menu a');
+                            first?.focus();
+                          }, 50);
+                        }
+                      }}
+                    >
                       <span className="nav-label">{link.label}</span>
                       <ChevronDown
                         size={14}
+                        aria-hidden="true"
                         className={`transition-transform duration-200 relative z-[3] ${servicesHover ? 'rotate-180' : ''}`}
                       />
                       <span className="nav-blob-btn__inner">
@@ -117,10 +138,29 @@ export default function Header() {
                       </span>
                     </button>
 
-                    {/* Mega Menu Dropdown */}
+                    {/*
+                      ── Always-in-DOM link list (visually hidden when closed) ──
+                      Crawlers + assistive tech always find these links,
+                      even when the dropdown is not visible.
+                    */}
+                    <ul
+                      className={!servicesHover ? 'sr-only' : undefined}
+                      aria-hidden={!servicesHover}
+                    >
+                      {SERVICE_LINKS.map((s) => (
+                        <li key={s.href}>
+                          <a href={s.href}>{s.label}</a>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* ── Animated dropdown panel ── */}
                     <AnimatePresence>
                       {servicesHover && (
                         <motion.div
+                          id="services-menu"
+                          role="menu"
+                          aria-labelledby="services-menu-btn"
                           variants={megaMenuVariants}
                           initial="hidden"
                           animate="visible"
@@ -132,6 +172,12 @@ export default function Header() {
                             WebkitBackdropFilter: 'blur(24px)',
                             boxShadow: '0 20px 40px rgba(0,0,0,0.7), 0 0 15px rgba(183,196,255,0.05)',
                           }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Escape') {
+                              setServicesHover(false);
+                              document.getElementById('services-menu-btn')?.focus();
+                            }
+                          }}
                         >
                           <div className="mb-3 px-2">
                             <p className="font-label-md text-label-md text-primary uppercase tracking-widest">
@@ -139,11 +185,32 @@ export default function Header() {
                             </p>
                           </div>
                           <div className="flex flex-col gap-1">
-                            {SERVICE_LINKS.map((service) => (
+                            {SERVICE_LINKS.map((service, idx) => (
                               <Link
                                 key={service.href}
                                 href={service.href}
+                                role="menuitem"
+                                tabIndex={0}
                                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-200 group"
+                                onClick={() => setServicesHover(false)}
+                                onKeyDown={(e) => {
+                                  const items = Array.from(
+                                    document.querySelectorAll<HTMLAnchorElement>('#services-menu [role="menuitem"]')
+                                  );
+                                  const cur = items.indexOf(e.currentTarget as HTMLAnchorElement);
+                                  if (e.key === 'ArrowDown') { e.preventDefault(); items[(cur + 1) % items.length]?.focus(); }
+                                  if (e.key === 'ArrowUp')   { e.preventDefault(); items[(cur - 1 + items.length) % items.length]?.focus(); }
+                                  if (e.key === 'Tab' && !e.shiftKey && cur === items.length - 1) {
+                                    setServicesHover(false);
+                                  }
+                                  if (e.key === 'Tab' && e.shiftKey && cur === 0) {
+                                    setServicesHover(false);
+                                  }
+                                  if (e.key === 'Escape') {
+                                    setServicesHover(false);
+                                    document.getElementById('services-menu-btn')?.focus();
+                                  }
+                                }}
                               >
                                 <span
                                   className="material-symbols-outlined material-symbols-filled text-primary text-xl"
