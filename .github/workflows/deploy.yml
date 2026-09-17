@@ -31,6 +31,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/
           server-dir: ./domains/perezroofingpro.com/public_html/
+          dangerous-clean-slate: true
           exclude: |
             apiLaravel/**
             **apiLaravel/**
