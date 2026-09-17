@@ -99,7 +99,7 @@ api.interceptors.response.use(
  * Laravel Route: POST /api/leads
  */
 export const submitLead = async (data) => {
-  // Laravel: POST /api/public/contact
+  // Laravel: POST public/contact
   const response = await api.post('/public/contact', data);
   return response.data;
 };
@@ -118,7 +118,7 @@ export const submitLead = async (data) => {
  * Laravel Route: POST /api/contact
  */
 export const submitContactForm = async (data) => {
-  // Laravel: POST /api/public/contact
+  // Laravel: POST /public/contact
   const response = await api.post('/public/contact', data);
   return response.data;
 };
@@ -182,7 +182,7 @@ export const submitReview = async (data) => {
  * Laravel Route: GET /api/gallery?page=1&per_page=12&category=metal-roofs
  */
 export const fetchGalleryImages = async (params = {}) => {
-  const response = await api.get('/api/gallery', {
+  const response = await api.get('/gallery', {
     params: {
       page: params.page || 1,
       per_page: params.perPage || 12,
@@ -204,7 +204,7 @@ export const fetchGalleryImages = async (params = {}) => {
  * Laravel Route: GET /api/services/:slug
  */
 export const fetchServiceDetails = async (slug) => {
-  const response = await api.get(`/api/services/${slug}`);
+  const response = await api.get(`/services/${slug}`);
   return response.data;
 };
 
@@ -216,7 +216,7 @@ export const fetchServiceDetails = async (slug) => {
  * Laravel Route: GET /api/services
  */
 export const fetchAllServices = async () => {
-  const response = await api.get('/api/services');
+  const response = await api.get('/services');
   return response.data;
 };
 
