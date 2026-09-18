@@ -144,8 +144,8 @@ export default function Header() {
                       even when the dropdown is not visible.
                     */}
                     <ul
-                      className={!servicesHover ? 'sr-only' : undefined}
-                      aria-hidden={!servicesHover}
+                      className="sr-only"
+                      aria-hidden="true"
                     >
                       {SERVICE_LINKS.map((s) => (
                         <li key={s.href}>
@@ -199,7 +199,7 @@ export default function Header() {
                                   );
                                   const cur = items.indexOf(e.currentTarget as HTMLAnchorElement);
                                   if (e.key === 'ArrowDown') { e.preventDefault(); items[(cur + 1) % items.length]?.focus(); }
-                                  if (e.key === 'ArrowUp')   { e.preventDefault(); items[(cur - 1 + items.length) % items.length]?.focus(); }
+                                  if (e.key === 'ArrowUp') { e.preventDefault(); items[(cur - 1 + items.length) % items.length]?.focus(); }
                                   if (e.key === 'Tab' && !e.shiftKey && cur === items.length - 1) {
                                     setServicesHover(false);
                                   }
@@ -371,28 +371,28 @@ export default function Header() {
 
               {/* Drawer Footer CTA */}
               <div className="p-4 border-t border-white/10 flex flex-col gap-3">
-                  <div className="flex flex-col gap-2">
-                    <div>
-                      <a
-                        href={CONTACT_INFO.phoneHref}
-                        className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md"
-                      >
-                        <Phone size={16} />
-                        {CONTACT_INFO.phone}
-                      </a>
-                      <p className="text-xs text-center text-outline mt-0.5">Main – Office</p>
-                    </div>
-                    <div>
-                      <a
-                        href={CONTACT_INFO.phoneEmergencyHref}
-                        className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md border-error/40 text-error hover:text-error"
-                      >
-                        <Phone size={16} />
-                        {CONTACT_INFO.phoneEmergency}
-                      </a>
-                      <p className="text-xs text-center text-outline mt-0.5">Roofing Emergencies</p>
-                    </div>
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <a
+                      href={CONTACT_INFO.phoneHref}
+                      className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md"
+                    >
+                      <Phone size={16} />
+                      {CONTACT_INFO.phone}
+                    </a>
+                    <p className="text-xs text-center text-outline mt-0.5">Main – Office</p>
                   </div>
+                  <div>
+                    <a
+                      href={CONTACT_INFO.phoneEmergencyHref}
+                      className="flex items-center justify-center gap-2 btn-secondary font-button text-button px-6 py-3 rounded-md border-error/40 text-error hover:text-error"
+                    >
+                      <Phone size={16} />
+                      {CONTACT_INFO.phoneEmergency}
+                    </a>
+                    <p className="text-xs text-center text-outline mt-0.5">Roofing Emergencies</p>
+                  </div>
+                </div>
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
