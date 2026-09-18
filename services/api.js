@@ -31,7 +31,7 @@ const api = axios.create({
    * The /api prefix is included here so all route paths below are clean
    * and match exactly the Laravel routes/api.php definitions.
    */
-  baseURL: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000') + '/api',
+  baseURL: (process.env.NEXT_PUBLIC_API_URL || 'https://api.perezroofingpro.com') + '/api',
 
   // Default headers for all requests
   headers: {
