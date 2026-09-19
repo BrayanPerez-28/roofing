@@ -1,26 +1,36 @@
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|txt)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+    <FilesMatch "\.(js|css|woff2?|png|jpg|jpeg|svg|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     Options -Indexes
+    DirectoryIndex index.html
 
-    # --- RSC payload requests (__next....__PAGE__.txt) ---
-    # Caso raíz: /__next.!HASH.__PAGE__.txt -> /__next.!HASH/__PAGE__.txt
+    RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_URI} ^/__next\.(![^/.]+)\.__PAGE__\.txt$
     RewriteRule ^ /__next.%1/__PAGE__.txt [L]
 
-    # Caso con ruta (uno o más niveles):
-    # /a/b/__next.!HASH.a.b.__PAGE__.txt -> /a/b/__next.!HASH/a/b/__PAGE__.txt
+    RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_URI} ^/(.+)/__next\.(![^/.]+)\.[^/]*\.__PAGE__\.txt$
     RewriteRule ^ /%1/__next.%2/%1/__PAGE__.txt [L]
 
-    # --- Rutas normales de páginas ---
-    RewriteCond %{REQUEST_URI} ^/(.*)/$
-    RewriteCond %{DOCUMENT_ROOT}/%1.html -f
-    RewriteRule ^ /%1.html [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} ^/__next\._tree\.txt$
+    RewriteRule ^ /__next._tree.txt [L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-    RewriteRule ^(.*)$ /$1.html [L]
+    RewriteCond %{REQUEST_URI} ^/(.+)/__next\._tree\.txt$
+    RewriteRule ^ /%1/__next._tree.txt [L]
+
+    RewriteCond %{REQUEST_URI} ^/(.*[^/])/?$
+    RewriteCond %{DOCUMENT_ROOT}/%1.html -f
+    RewriteRule ^ /%1.html [L]
 
     ErrorDocument 404 /404.html
 </IfModule>
