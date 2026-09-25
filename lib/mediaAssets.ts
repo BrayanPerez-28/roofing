@@ -90,7 +90,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   { src: img(SM, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.44_e66c14cb.jpg'), alt: 'Roof tile project', category: 'tile' },
   { src: img(CT, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.55_1b6f4879-1.jpg'), alt: 'Tile roof replacement', category: 'tile' },
   { src: img(CT, 'WhatsApp Image 2026-07-07 at 9.59.20 PM (2).jpeg'), alt: 'Tile roof installation', category: 'tile' },
-  { src: img(CT, 'WhatsApp Image 2026-07-07 at 9.59.21 PM (3).jpeg'), alt: 'New tile roof installation', category: 'tile' },
+
   { src: img(CT, 'WhatsApp Image 2026-07-07 at 9.59.23 PM (3).jpeg'), alt: 'Bay Area concrete tile project', category: 'tile' },
 
   // ── Wood Shingles ──
@@ -113,6 +113,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   { src: img(FP, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.54_157b8369.jpg'), alt: 'Flat roofing work Bay Area', category: 'flat' },
   { src: img(CS, 'WhatsApp Image 2026-07-07 at 9.59.19 PM (2).jpeg'), alt: 'Flat roof commercial', category: 'flat' },
   { src: img(CS, 'WhatsApp Image 2026-07-07 at 9.59.22 PM (3).jpeg'), alt: 'Flat roof TPO system', category: 'flat' },
+  { src: img(FP, 'pvc1.jpeg'), alt: 'PVC flat roof installation', category: 'flat' },
 
   // ── Standing Seam Metal Roofs ──
   { src: img(SM, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.43_0a034a7c.jpg'), alt: 'Metal roof installation', category: 'metal' },
@@ -217,7 +218,6 @@ export const SERVICE_IMAGES: Record<string, string[]> = {
     img(SM, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.44_e66c14cb.jpg'),
     img(CT, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.55_1b6f4879-1.jpg'),
     img(CT, 'WhatsApp Image 2026-07-07 at 9.59.20 PM (2).jpeg'),
-    img(CT, 'WhatsApp Image 2026-07-07 at 9.59.21 PM (3).jpeg'),
     img(CT, 'WhatsApp Image 2026-07-07 at 9.59.23 PM (3).jpeg'),
   ],
   'wood-shingles': [
@@ -236,6 +236,7 @@ export const SERVICE_IMAGES: Record<string, string[]> = {
     img(CS, 'WhatsApp Image 2026-07-07 at 9.59.19 PM (2).jpeg'),
     img(CS, 'WhatsApp Image 2026-07-07 at 9.59.22 PM (3).jpeg'),
     img(FP, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.54_0c96fcc3-1.jpg'),
+    img(FP, 'pvc1.jpeg'),
   ],
   'metal-roofs': [
     img(SM, 'Imagen-de-WhatsApp-2025-06-15-a-las-16.57.43_0a034a7c.jpg'),
