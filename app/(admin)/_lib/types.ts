@@ -46,11 +46,13 @@ export interface PaginatedResponse<T> {
 // ─── API Responses ─────────────────────────────────────────────────────────────
 
 export interface ApiResponse<T = unknown> {
-  status: "ok" | "error";
+  status: "ok" | "error" | "pending_2fa";
   message: string;
   data?: T;
   user?: User;
   token?: string;
+  requires_2fa?: boolean;
+  email?: string;
 }
 
 // ─── Form Payloads ─────────────────────────────────────────────────────────────
@@ -58,6 +60,11 @@ export interface ApiResponse<T = unknown> {
 export interface LoginPayload {
   email: string;
   password: string;
+}
+
+export interface Verify2faPayload {
+  email: string;
+  code: string | number;
 }
 
 export interface ReviewUpdatePayload {

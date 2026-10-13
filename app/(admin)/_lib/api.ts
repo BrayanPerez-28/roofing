@@ -6,6 +6,7 @@ import type {
   Review,
   Contact,
   LoginPayload,
+  Verify2faPayload,
   ReviewUpdatePayload,
   ContactUpdatePayload,
   Service,
@@ -43,11 +44,16 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isAuthRoute = error.config?.url?.includes("/auth/");
+    if (error.response?.status === 401 && !isAuthRoute) {
       clearAuth();
-      if (typeof window !== "undefined") {
+      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
         window.location.href = "/login";
       }
+    }
+    const serverMessage = error.response?.data?.message;
+    if (serverMessage && typeof serverMessage === "string") {
+      error.message = serverMessage;
     }
     return Promise.reject(error);
   }
@@ -56,8 +62,37 @@ api.interceptors.response.use(
 // ─── Auth Endpoints ─────────────────────────────────────────────────────────────
 
 export const authApi = {
-  login: (payload: LoginPayload) =>
-    api.post<ApiResponse>("/auth/login", payload).then((r) => r.data),
+  login: async (payload: LoginPayload): Promise<ApiResponse> => {
+    const res = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.message || "Credenciales inválidas.");
+    }
+    return data as ApiResponse;
+  },
+
+  verify2fa: async (payload: Verify2faPayload): Promise<ApiResponse> => {
+    const res = await fetch(`${BASE_URL}/api/auth/login/verify-2fa`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.message || "El código de verificación es inválido o ha expirado.");
+    }
+    return data as ApiResponse;
+  },
 
   logout: () =>
     api.post<ApiResponse>("/admin/logout").then((r) => r.data),

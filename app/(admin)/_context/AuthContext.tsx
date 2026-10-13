@@ -17,7 +17,7 @@ import {
   setStoredUser,
   getStoredUser,
 } from "../_lib/auth";
-import type { User, LoginPayload } from "../_lib/types";
+import type { User, LoginPayload, ApiResponse, Verify2faPayload } from "../_lib/types";
 
 // ─── Context Shape ──────────────────────────────────────────────────────────────
 
@@ -25,7 +25,8 @@ interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (payload: LoginPayload, remember: boolean) => Promise<void>;
+  login: (payload: LoginPayload, remember: boolean) => Promise<ApiResponse>;
+  verify2fa: (payload: Verify2faPayload, remember: boolean) => Promise<ApiResponse>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -69,15 +70,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(
-    async (payload: LoginPayload, remember: boolean) => {
+    async (payload: LoginPayload, remember: boolean): Promise<ApiResponse> => {
       const res = await authApi.login(payload);
+      if (res.status === "ok" && res.token && res.user) {
+        setToken(res.token, remember);
+        setStoredUser(res.user as User, remember);
+        setUser(res.user as User);
+        router.push("/admin/dashboard");
+      }
+      return res;
+    },
+    [router]
+  );
+
+  const verify2fa = useCallback(
+    async (payload: Verify2faPayload, remember: boolean): Promise<ApiResponse> => {
+      const res = await authApi.verify2fa(payload);
       if (res.status !== "ok" || !res.token || !res.user) {
-        throw new Error(res.message || "Login failed");
+        throw new Error(res.message || "Código de verificación inválido o expirado.");
       }
       setToken(res.token, remember);
       setStoredUser(res.user as User, remember);
       setUser(res.user as User);
       router.push("/admin/dashboard");
+      return res;
     },
     [router]
   );
@@ -113,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         isAuthenticated: !!user,
         login,
+        verify2fa,
         logout,
         refreshUser,
       }}
